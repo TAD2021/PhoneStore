@@ -1,0 +1,39 @@
+.wrapper {
+    width: 100%;
+    height: 375px;
+    --mt: 20px;
+    margin-top: var(--mt);
+    display: flex;
+    justify-content: center;
+
+    .slider {
+        width: 900px;
+        padding-right: 20px;
+
+        img {
+            height: 375px;
+            border-radius: 20px;
+        }
+    }
+
+    .ad_list {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .ad_item {
+            background-color: rgba(248, 250, 252, 1);
+            height: 30%;
+            width: 100%;
+            padding-left: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            border-radius: 10px;
+            p {
+                font-size: 1.4rem;
+            }
+        }
+    }
+}

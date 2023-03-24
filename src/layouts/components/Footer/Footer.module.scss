@@ -1,0 +1,48 @@
+.wrapper {
+    height: auto;
+    padding: 32px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .container {
+        width: var(--default-layout-width);
+
+        .support {
+            margin-top: 24px;
+
+            .contact {
+                display: flex;
+                align-items: center;
+                margin-top: 24px;
+                a {
+                    width: 68px;
+                    height: 68px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 50%;
+                    margin-right: 20px;
+                    background-color: red;
+                }
+
+                .phone {
+                    --tw-bg-opacity: 1;
+                    background-color: rgb(var(--s) / var(--tw-bg-opacity));
+                }
+                .zalo {
+                    background: #0068ff;
+                }
+                .messenger {
+                    background: linear-gradient(220.97deg, #ff666d 8.67%, #9539fe 52.12%, #0191ff 87.37%);
+                }
+
+                .telegram {
+                    background: linear-gradient(203.2deg, #37aee2 21.67%, #1e96c8 70%);
+                }
+            }
+        }
+        .store {
+            margin-top: 32px;
+        }
+    }
+}

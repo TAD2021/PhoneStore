@@ -1,0 +1,147 @@
+.wrapper {
+    --tw-bg-opacity: 1;
+    background-color: rgb(var(--b1) / var(--tw-bg-opacity));
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: var(--default-layout-width);
+    height: auto;
+    padding: 16px 0 60px 0;
+    --font-size: 2rem;
+    --mb: 16px;
+
+    .header {
+        font-size: var(--font-size);
+        line-height: 150%;
+        margin-bottom: var(--mb);
+        font-weight: 500;
+    }
+
+    .cart {
+        display: flex;
+        height: calc(100% - var(--font-size) - var(--mb));
+
+        .cart_list_empty {
+            flex: 2;
+            background-color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            height: auto;
+
+            .cart_empty {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                padding: 40px 0;
+
+                img {
+                    width: 128px;
+                    height: 128px;
+                }
+
+                .title {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 16px;
+
+                    span {
+                        font-weight: 600;
+                        font-size: 1.8rem;
+                    }
+
+                    p {
+                        margin-top: 12px;
+                        font-size: 1.4rem;
+                    }
+
+                    .discover {
+                        margin-top: 32px;
+                        button {
+                            height: 44px;
+                            padding: 0 12px;
+                            --tw-bg-opacity: 1;
+                            background-color: rgb(var(--p) / var(--tw-bg-opacity));
+                            color: white;
+                            font-size: 1.6rem;
+                            border-radius: 8px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .cart_list {
+            flex: 2;
+            border-radius: 8px;
+        }
+
+        .summary {
+            flex: 1;
+            margin-left: 20px;
+
+            .summary_container {
+                padding: 16px 24px;
+                background-color: white;
+                border-radius: 8px;
+                h5 {
+                    font-size: 1.8rem;
+                    line-height: 150%;
+                }
+
+                .discount,
+                .total {
+                    font-size: 1.2rem;
+                    line-height: 150%;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .discount {
+                    padding: 16px 0;
+                    border-bottom: 1px dashed;
+                    --tw-border-opacity: 1;
+                    border-color: rgb(var(--b3) / var(--tw-border-opacity));
+                }
+
+                .total {
+                    padding: 16px 0 8px 0;
+                    .text-pink {
+                        font-size: 2rem;
+                        --tw-text-opacity: 1;
+                        color: rgb(var(--s) / var(--tw-text-opacity));
+                    }
+                }
+
+                button {
+                    width: 100%;
+                    padding: 0 12px;
+                    height: 44px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 1.6rem;
+                    margin-top: 8px;
+                }
+
+                .buy {
+                    --tw-bg-opacity: 1;
+                    background-color: rgb(var(--s) / var(--tw-bg-opacity));
+                    --tw-text-opacity: 1;
+                    color: rgb(var(--sc) / var(--tw-text-opacity));
+                    cursor: pointer;
+
+                    &:hover {
+                        --tw-bg-opacity: 1;
+                        background-color: rgb(var(--sh, var(--s)) / var(--tw-bg-opacity));
+                    }
+                }
+            }
+        }
+    }
+}

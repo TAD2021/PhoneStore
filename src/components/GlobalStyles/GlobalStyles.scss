@@ -1,0 +1,177 @@
+@import 'normalize.css';
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
+@import url('https://use.typekit.net/nko5fvg.css');
+
+:root {
+    // Default layout
+    --default-layout-header-height: 79px;
+    --default-layout-categories-height: 88px;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --default-layout-width: 1200px;
+    --p: 0 101 238;
+    --ph: 4 85 195;
+    --pa: 6 68 152;
+    --pl: 235 243 255;
+    --pc: 255 255 255;
+    --s: 254 52 100;
+    --sh: 234 31 79;
+    --sa: 191 34 71;
+    --sl: 255 245 247;
+    --sc: 255 255 255;
+    --t: 0 101 238;
+    --th: 4 85 195;
+    --ta: 6 68 152;
+    --tl: 235 243 255;
+    --tc: 255 255 255;
+    --i: 0 101 238;
+    --ih: 4 85 195;
+    --ia: 6 68 152;
+    --il: 235 243 255;
+    --ic: 255 255 255;
+    --su: 59 179 70;
+    --suh: 48 149 59;
+    --sua: 37 119 47;
+    --sul: 241 252 241;
+    --suc: 255 255 255;
+    --w: 252 136 0;
+    --wh: 210 103 0;
+    --wa: 168 74 0;
+    --wl: 255 250 241;
+    --wc: 255 255 255;
+    --d: 249 57 32;
+    --dh: 213 37 21;
+    --da: 178 20 12;
+    --dl: 255 248 245;
+    --dc: 255 255 255;
+    --di: 230 232 234;
+    --dic: 107 112 117;
+    --b: 255 255 255;
+    --b1: 246 249 252;
+    --b2: 240 242 244;
+    --b3: 230 232 234;
+    --b4: 218 221 224;
+    --bo: 28 31 35;
+    --bc1: 28 31 35;
+    --bc2: 65 70 76;
+    --bc3: 107 112 117;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizespeed;
+    color: var(--text-color);
+    font-family: ibm-plex-sans, sans-serif;
+}
+
+button,
+input,
+[tabindex] {
+    outline: none;
+    border: none;
+}
+
+a[href] {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.slick-prev:before,
+.slick-next:before {
+    display: none;
+}
+
+.blueIcon,
+.greenIcon {
+    height: 2.4rem;
+    width: 2.4rem;
+    display: inline-block;
+}
+
+.blueIcon {
+    --tw-text-opacity: 1;
+    color: rgb(50 149 251 / var(--tw-text-opacity));
+}
+
+.greenIcon {
+    --tw-text-opacity: 1;
+    color: rgb(90 194 98 / var(--tw-text-opacity));
+}
+
+.orangeIcon {
+    --tw-text-opacity: 1;
+    color: rgb(250 102 76 / var(--tw-text-opacity));
+}
+
+.purpleIcon {
+    --tw-text-opacity: 1;
+    color: rgb(113 46 255 / var(--tw-text-opacity));
+}
+
+.text--green {
+    --tw-text-opacity: 1;
+    color: rgb(90 194 98 / var(--tw-text-opacity));
+}
+
+.text--blue {
+    --tw-text-opacity: 1;
+    color: rgb(50 149 251 / var(--tw-text-opacity));
+}
+
+.text--orange {
+    --tw-text-opacity: 1;
+    color: rgb(250 102 76 / var(--tw-text-opacity));
+}
+
+.text--purple {
+    --tw-text-opacity: 1;
+    color: rgb(113 46 255 / var(--tw-text-opacity));
+}
+
+.text-white {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-h3 {
+    font-size: 2.4rem;
+    line-height: 34px;
+}
+
+.text-md {
+    font-size: 1.4rem;
+    line-height: 150%;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.box-shadow {
+    border-radius: 0.8rem;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0px 0px 1px rgba(0, 0, 0, 0.16), 0px 2px 4px rgba(0, 0, 0, 0.06);
+    --tw-shadow-colored: 0px 0px 1px var(--tw-shadow-color), 0px 2px 4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.inset-0 {
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}

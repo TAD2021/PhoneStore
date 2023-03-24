@@ -1,0 +1,29 @@
+.wrapper {
+    width: var(--default-layout-width);
+    margin-top: 32px;
+}
+
+.trademark_list {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+
+    .trademark_item {
+        width: 100px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid rgba(236, 240, 244, 1);
+        border-radius: 4px;
+        margin-right: 10px;
+        outline: none;
+        &:hover {
+            border-color: #2f80ed;
+            cursor: pointer;
+        }
+        img {
+            width: 90px;
+        }
+    }
+}
