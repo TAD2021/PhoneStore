@@ -1,0 +1,170 @@
+.wrapper {
+    flex: 5;
+    .header {
+        width: 100%;
+        margin-bottom: 12px;
+        display: flex;
+        overflow: hidden;
+        position: sticky;
+        height: 50px;
+        top: 0px;
+        z-index: 10;
+        background: rgb(255, 255, 255);
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        > div {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            &:hover {
+                color: var(--primary-color);
+            }
+            &.active {
+                color: var(--primary-color);
+                border-bottom: 2px solid;
+                border-color: var(--primary-color);
+            }
+        }
+    }
+    .body {
+        .container {
+            margin: 12px 0;
+            background-color: white;
+            .product {
+                padding: 24px 24px 12px 24px;
+                .status {
+                    padding-bottom: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    color: var(--primary-color);
+                    font-size: 1.6rem;
+                    border-bottom: 1px solid;
+                    --tw-border-opacity: 1;
+                    border-color: rgb(var(--b3) / var(--tw-border-opacity));
+                }
+
+                span {
+                    display: flex;
+                    padding-top: 12px;
+                    align-items: center;
+                    overflow-wrap: break-word;
+                    .product_detail {
+                        padding-right: 12px;
+                        flex: 1 1 0%;
+                        align-items: flex-start;
+                        flex-wrap: nowrap;
+                        display: flex;
+                        overflow-wrap: break-word;
+                        .product_detail-img {
+                            width: 80px;
+                            height: 80px;
+                            flex-shrink: 0;
+                            border: 1px solid rgb(225, 225, 225);
+                            background: rgb(225, 225, 225);
+                            .img {
+                                width: 100%;
+                                height: 100%;
+                                position: relative;
+                                .no-img {
+                                    width: 100%;
+                                    height: 100%;
+                                    position: relative;
+                                    background-color: rgb(250, 250, 250);
+                                    img {
+                                        position: absolute;
+                                        top: 50%;
+                                        left: 50%;
+                                        transform: translate(-50%, -50%);
+                                        font-size: 1.5rem;
+                                        font-weight: 400;
+                                        line-height: 2rem;
+                                        -webkit-font-smoothing: antialiased;
+                                        stroke: rgb(198, 198, 198);
+                                        display: inline-block;
+                                        width: 1em;
+                                        height: 1em;
+                                        fill: currentColor;
+                                    }
+                                }
+                                .have-img {
+                                    background-image: url('https://down-vn.img.susercontent.com/file/sg-11134201-23020-0y7mo9eie4mv7c');
+                                    background-position: 50% center;
+                                    background-size: cover;
+                                    background-repeat: no-repeat;
+                                    position: absolute;
+                                    top: 0px;
+                                    left: 0px;
+                                    width: 100%;
+                                    height: 100%;
+                                }
+                            }
+                        }
+
+                        .product_detail-text {
+                            padding-left: 12px;
+                            display: flex;
+                            flex: 1 1 0%;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            overflow-wrap: break-word;
+                            .detail {
+                                > div {
+                                    overflow: hidden;
+                                    display: -webkit-box;
+                                    text-overflow: ellipsis;
+                                    margin: 0px 0px 5px;
+                                    font-size: 16px;
+                                    line-height: 22px;
+                                    max-height: 48px;
+                                    span {
+                                        vertical-align: middle;
+                                        font-size: 1.6rem;
+                                        line-height: 150%;
+                                    }
+                                }
+                            }
+                        }
+                        .quantity {
+                            > div {
+                                margin-bottom: 5px;
+                            }
+                        }
+                    }
+                    .price {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .br {
+                    border-bottom: 1px dotted rgba(0, 0, 0, 0.09);
+                }
+
+                .money {
+                    padding: 24px 0 12px;
+                    background: #fffefb;
+                    > div {
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        > div:first-child {
+                            margin: 0 10px 0 0;
+                            font-size: 1.4rem;
+                            line-height: 150%;
+                            color: rgba(0, 0, 0, 0.8);
+                        }
+
+                        > div:last-child {
+                            color: var(--primary-color);
+                            font-size: 2.4rem;
+                            line-height: 150%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

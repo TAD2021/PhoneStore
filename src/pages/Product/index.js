@@ -1,22 +1,24 @@
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
-import Button from '~/components/Button';
-import Products from '~/layouts/components/Products';
+import Button from '~/components/Button1';
+import Products from '~/components/Products';
 import styles from './Product.module.scss';
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 const datas = ['iphone', 'samsung', 'oppo'];
+const arranges = ['Nổi bật nhất', 'Giá thấp → cao', 'Giá cao → thấp'];
 const filters = [
-    'Sắp xếp: Nổi bật nhất',
-    'Thương hiệu',
-    'Màu sắc',
-    'Nhu cầu',
-    'Nguồn hàng',
-    'Tình trạng',
-    'Khoảng giá',
+    { name: 'Thương hiệu', value: ['iphone', 'samsung', 'oppo'] },
+    { name: 'Màu sắc', value: ['Trắng', 'Đen', 'Đỏ '] },
+    { name: 'Nhu cầu', value: ['Chơi game', 'Học tập'] },
+    { name: 'Nguồn hàng', value: ['Chính hãng', 'Nhập khẩu'] },
+    { name: 'Tình trạng', value: ['Outlet', 'Used'] },
+    { name: 'Khoảng giá', value: ['Dưới 10tr', 'Từ 10tr đến 20tr', 'Từ 20tr đến 30tr', 'Từ 30tr đến 40tr'] },
 ];
 
 const products = [
@@ -200,22 +202,87 @@ function Product() {
                     <hr />
                     <div className={cx('category_item')}>
                         {datas.map((data, index) => (
-                            <Button info={data} key={index} color="gray" />
+                            <Button key={index} color="gray">
+                                {data}
+                            </Button>
                         ))}
                     </div>
                 </div>
                 <div className={cx('filter')}>
                     <div className={cx('filter_list')}>
+                        <div className={cx('filter_item')}>
+                            <HeadlessTippy
+                                interactive
+                                delay={[0, 500]}
+                                placement="bottom"
+                                render={(attrs) => (
+                                    <div style={{ width: '200px' }} tabIndex="-1" {...attrs}>
+                                        <PopperWrapper>
+                                            {arranges.map((arrange, index) => (
+                                                <div className={cx('arrange_item')} key={index}>
+                                                    <input
+                                                        type="radio"
+                                                        id={index}
+                                                        name="arrange"
+                                                        value={arrange}
+                                                        defaultChecked={index === 0}
+                                                    />
+                                                    <label htmlFor={index}>{arrange}</label>
+                                                </div>
+                                            ))}
+                                        </PopperWrapper>
+                                    </div>
+                                )}
+                            >
+                                <Button icon={<FontAwesomeIcon icon={faChevronDown} />}>Sắp xếp: {arranges[0]}</Button>
+                            </HeadlessTippy>
+                        </div>
                         {filters.map((filter, index) => (
                             <div className={cx('filter_item')} key={index}>
-                                <Button info={filter} icon={<FontAwesomeIcon icon={faChevronDown} />} />
+                                <HeadlessTippy
+                                    interactive
+                                    delay={[0, 200]}
+                                    offset={[12, 8]}
+                                    placement="bottom"
+                                    render={(attrs) => (
+                                        <div tabIndex="-1" {...attrs}>
+                                            <PopperWrapper>
+                                                <div className={cx('arrange_item')}>
+                                                    <input
+                                                        type="radio"
+                                                        id={'all' + index}
+                                                        name={filter.name}
+                                                        value="all"
+                                                        defaultChecked
+                                                    />
+                                                    <label htmlFor={'all' + index}>Tất cả</label>
+                                                </div>
+                                                <div className={cx('filter_wrapper')}>
+                                                {filter.value.map((newvalue, index) => (
+                                                        <div className={cx('filter_itemm')} key={index}>
+                                                        <input
+                                                            type="checkbox"
+                                                            id={index}
+                                                            name="arrange"
+                                                            value={newvalue}
+                                                        />
+                                                        <label htmlFor={index}>{newvalue}</label>
+                                                    </div>
+                                                ))}
+                                                </div>
+                                            </PopperWrapper>
+                                        </div>
+                                    )}
+                                >
+                                    <Button icon={<FontAwesomeIcon icon={faChevronDown} />}>{filter.name}</Button>
+                                </HeadlessTippy>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 <div className={cx('product')}>
-                    <Products products={products[0].product.slice(0, quantity)} slug={products[0].slug} />
+                    <Products products={products[0].product.slice(0, quantity)} category={products[0].slug} />
                     <div className={cx('more_product')}>
                         <button onClick={() => handleQuantity()}>Xem thêm</button>
                     </div>

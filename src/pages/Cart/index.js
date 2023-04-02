@@ -1,7 +1,7 @@
 import styles from './Cart.module.scss';
 import classNames from 'classnames/bind';
 import images from '~/assets/images';
-import CartItem from '~/layouts/components/CartItem';
+import CartItem from '~/components/CartItem';
 
 const cx = classNames.bind(styles);
 

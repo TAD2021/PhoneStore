@@ -4,6 +4,7 @@ const routes = {
     admin: '/admin',
     product: '/:slug',
     productDetail: '/:product/:slug',
+    profile: '/users/account/:slug',
 };
 
 export default routes;

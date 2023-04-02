@@ -5,12 +5,12 @@ import styles from './Products.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Products({ products, slug }) {
+function Products({ products, category }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid', 'product_list')}>
                 {products.map((product, index) => (
-                    <Link to={'/' + slug + '/' + product.name} key={index}>
+                    <Link to={'/' + category + '/' + product.name} key={index}>
                         <ProductItem product={product} />
                     </Link>
                 ))}

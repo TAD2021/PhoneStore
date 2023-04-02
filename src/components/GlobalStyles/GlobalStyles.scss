@@ -1,9 +1,14 @@
 @import 'normalize.css';
-@import '~slick-carousel/slick/slick.css';
-@import '~slick-carousel/slick/slick-theme.css';
-@import url('https://use.typekit.net/nko5fvg.css');
 
 :root {
+    --primary-color: #fe3464;
+    --white-color: #fff;
+    --black-color: #000;
+    --text-color: #333;
+    --border-color: #dbdbdb;
+    --start-gold-color: #ffce3e;
+    --header-height: 120px;
+    --navbar-height: 34px;
     // Default layout
     --default-layout-header-height: 79px;
     --default-layout-categories-height: 88px;
@@ -11,6 +16,8 @@
     --tw-ring-offset-shadow: 0 0 #0000;
     --tw-ring-shadow: 0 0 #0000;
     --default-layout-width: 1200px;
+    --font-family: 'ProximaNova', sans-serif;
+
     --p: 0 101 238;
     --ph: 4 85 195;
     --pa: 6 68 152;
@@ -74,7 +81,7 @@ body {
     line-height: 1.5;
     text-rendering: optimizespeed;
     color: var(--text-color);
-    font-family: ibm-plex-sans, sans-serif;
+    font-family: var(--font-family);
 }
 
 button,
@@ -146,6 +153,16 @@ a[href] {
     color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-primary {
+    --tw-text-opacity: 1;
+    color: rgb(var(--s) / var(--tw-text-opacity));
+}
+
+.button-primary {
+    --tw-bg-opacity: 1;
+    background-color: rgb(var(--s) / var(--tw-bg-opacity));
+}
+
 .text-h3 {
     font-size: 2.4rem;
     line-height: 34px;
@@ -174,4 +191,29 @@ a[href] {
     right: 0px;
     bottom: 0px;
     left: 0px;
+}
+
+// Fonts emmbeded
+@font-face {
+    font-family: ProximaNova;
+    src: url('/assets/fonts/Proxima-Nova-Regular.woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: ProximaNova;
+    src: url('/assets/fonts/Proxima-Nova-Semibold.woff2');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: ProximaNova;
+    src: url('/assets/fonts/Proxima-Nova-Bold.woff');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: SofiaPro;
+    src: url('/assets/fonts/sofiapro-bold.woff2');
+    font-weight: 700;
 }

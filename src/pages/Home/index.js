@@ -1,10 +1,10 @@
 import { Fragment, useState } from 'react';
-import Advertisement from '~/layouts/components/Advertisement';
-import Trademark from '~/layouts/components/Trademark';
+import Advertisement from '~/components/Advertisement';
+import Trademark from '~/components/Trademark';
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
-import Button from '~/components/Button';
-import Products from '~/layouts/components/Products';
+import Button from '~/components/Button1';
+import Products from '~/components/Products';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faEnvelope, faHeadset, faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,6 +13,7 @@ const cx = classNames.bind(styles);
 const products = [
     {
         category: 'Điện thoại',
+        slug: 'phone',
         product: [
             {
                 name: 'Surface Laptop 3 15',
@@ -69,6 +70,7 @@ const products = [
     },
     {
         category: 'Ốp lưng',
+        slug: 'bumper',
         product: [
             {
                 name: 'Ôp lung',
@@ -79,6 +81,7 @@ const products = [
     },
     {
         category: 'Sạc & Sạc dự phòng',
+        slug: 'charge',
         product: [
             {
                 name: 'Sạc',
@@ -89,6 +92,7 @@ const products = [
     },
     {
         category: 'Tai nghe',
+        slug: 'headphone',
         product: [
             {
                 name: 'Tai nghe',
@@ -99,6 +103,7 @@ const products = [
     },
     {
         category: 'Miếng dán màn hình',
+        slug: 'screenProtector',
         product: [
             {
                 name: 'Miếng dán màn hình',
@@ -125,15 +130,16 @@ function Home() {
                             {products.map((product, index) => (
                                 <Button
                                     key={index}
-                                    info={product.category}
                                     handleActive={handleActive}
                                     index={index}
                                     primary={index === active && 'active'}
-                                />
+                                >
+                                    {product.category}
+                                </Button>
                             ))}
                         </div>
                     </div>
-                    <Products products={products[active].product} />
+                    <Products products={products[active].product} category={products[active].slug} />
                     <section className={cx('usp')}>
                         <div className={cx('usp_container')}>
                             <h2>

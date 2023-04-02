@@ -1,0 +1,26 @@
+.button {
+    padding: 12px 16px;
+    margin-right: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.active {
+    background-color: #ebf3ff;
+    color: #0065ee;
+}
+
+.gray {
+    --tw-bg-opacity: 1;
+    background-color: rgb(var(--b1) / var(--tw-bg-opacity));
+}
+
+.info {
+    margin-right: 6px;
+}
+
+.icon {
+    font-size: 1rem;
+}
