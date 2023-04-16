@@ -4,6 +4,7 @@
     justify-content: center;
     --tw-bg-opacity: 1;
     background-color: rgb(var(--b1) / var(--tw-bg-opacity));
+    margin-top: var(--default-layout-header-height);
     padding: 24px 0;
 
     .container {
@@ -53,15 +54,60 @@
                         }
                     }
                 }
-                
-                .filter_wrapper{
+
+                .filter_wrapper {
                     padding: 4px 8px;
                     display: grid;
                     grid-template-columns: repeat(2, minmax(0px, 1fr));
                     row-gap: 0.25rem;
                     column-gap: 1rem;
-                    .filter_itemm{
+                    .filter_itemm {
                         display: flex;
+
+                        input {
+                            margin-right: 4px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .non-product {
+            padding: 24px 0 40px;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            > div {
+                margin-top: 16px;
+                padding: 0 8px;
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+                > span {
+                    font-size: 1.8rem;
+                    line-height: 150%;
+                    font-weight: 600;
+                }
+                > p {
+                    font-size: 1.4rem;
+                    line-height: 150%;
+                    text-align: center;
+                    margin-top: 12px;
+                }
+
+                > a {
+                    margin-top: 32px;
+                    > button {
+                        font-size: 1.6rem;
+                        --tw-text-opacity: 1;
+                        color: rgb(var(--pc) / var(--tw-text-opacity));
+                        --tw-bg-opacity: 1;
+                        background-color: rgb(var(--p) / var(--tw-bg-opacity));
+                        padding: 0 12px;
+                        height: 44px;
+                        border-radius: 4px;
+                        font-weight: 600;
+                        cursor: pointer;
                     }
                 }
             }

@@ -2,14 +2,22 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faCircleQuestion, faEarthAsia, faSignOut, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCartShopping,
+    faCircleQuestion,
+    faCircleXmark,
+    faEarthAsia,
+    faSignOut,
+    faStore,
+    faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Search from '../Search';
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Menu from '../Popper/Menu';
-import * as registerService from '~/services/registerService';
-import * as loginService from '~/services/loginService';
+import * as authService from '~/services/authService';
+import { useDispatch, useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
@@ -49,36 +57,66 @@ const userMenu = [
     {
         icon: <FontAwesomeIcon icon={faSignOut} />,
         title: 'Log out',
-        to: '/logout',
+        to: `/`,
         separate: true,
     },
 ];
 
 function Header() {
-    const [currentUser, setCurrentUser] = useState(false);
-
     const [modal, setModal] = useState(false);
     const [register, setRegister] = useState(false);
-
     const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [emailLogin, setEmailLogin] = useState('');
+    const [passwordLogin, setPasswordLogin] = useState('');
+    const [error, setError] = useState(false);
+
+    const cart = useSelector((state) => state.cart.cart.length);
+
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.login);
 
     const handleOnChangeEmail = (e) => setEmail(e.target.value);
-    const handleOnChangeUserName = (e) => setUsername(e.target.value);
+    const handleOnChangeName = (e) => setName(e.target.value);
     const handleOnChangePassword = (e) => setPassword(e.target.value);
+    const handleOnChangeConfirmPassword = (e) => setConfirmPassword(e.target.value);
+    const handleOnChangeEmailLogin = (e) => setEmailLogin(e.target.value);
+    const handleOnChangePasswordLogin = (e) => setPasswordLogin(e.target.value);
 
     const handleRegister = async () => {
-        const result = await registerService.register(username, email, password);
-        console.log(result);
-        return result;
+        const regexEmail = new RegExp(/^([a-z0-9_-]+)@([\da-z-]+)\.([a-z]{2,6})$/);
+        if (!regexEmail.test(email)) {
+            alert('Vui lòng nhập đúng định dạng email');
+            return;
+        }
+        if (password !== confirmPassword) {
+            alert('Xác nhận mật khẩu phải trùng với mật khẩu');
+            return;
+        }
+        await authService.register(email, name, password, dispatch);
+        setRegister(false);
     };
 
     const handleLogin = async () => {
-        const result = await loginService.login(username, password);
-        setModal(false); 
-        setCurrentUser(true);
+        await authService.login(emailLogin, passwordLogin, dispatch);
     };
+
+    useEffect(() => {
+        if (user.error) {
+            setError(true);
+        } else {
+            setError(false);
+        }
+        if (user.currentUser) {
+            setModal(false);
+            setEmailLogin('');
+            setPasswordLogin('');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user.isFetching]);
 
     return (
         <header className={cx('wrapper')}>
@@ -93,15 +131,22 @@ function Header() {
                 </div>
                 <Search />
                 <div className={cx('actions')}>
+                    <Link to="/phone" className={cx('action')}>
+                        <div className={cx('phone')}>
+                            <FontAwesomeIcon icon={faStore} />
+                        </div>
+                    </Link>
                     <Link to="/cart" className={cx('action')}>
                         <div className={cx('cart')}>
                             <FontAwesomeIcon icon={faCartShopping} />
                         </div>
-                        <div className={'button-primary ' + cx('quantity')}>
-                            <span>3</span>
-                        </div>
+                        {cart > 0 && (
+                            <div className={'button-primary ' + cx('quantity')}>
+                                <span>{cart}</span>
+                            </div>
+                        )}
                     </Link>
-                    {currentUser ? (
+                    {user.currentUser ? (
                         <Menu items={userMenu}>
                             <img
                                 className={cx('user-avatar')}
@@ -149,9 +194,9 @@ function Header() {
                                             <input
                                                 type="text"
                                                 className={cx('auth-form__input')}
-                                                placeholder="Username của bạn"
-                                                value={username}
-                                                onChange={handleOnChangeUserName}
+                                                placeholder="Họ và tên của bạn"
+                                                value={name}
+                                                onChange={handleOnChangeName}
                                             />
                                         </div>
 
@@ -170,6 +215,8 @@ function Header() {
                                                 type="password"
                                                 className={cx('auth-form__input')}
                                                 placeholder="Nhập lại mật khẩu"
+                                                value={confirmPassword}
+                                                onChange={handleOnChangeConfirmPassword}
                                             />
                                         </div>
                                     </div>
@@ -190,11 +237,15 @@ function Header() {
                                     <div className={cx('auth-form__controls')}>
                                         <button
                                             className={cx('btn--normal', 'btn', 'auth-form__controls-back')}
-                                            onClick={() => setModal(!modal)}
+                                            onClick={() => setModal(false)}
                                         >
                                             TRỞ LẠI
                                         </button>
-                                        <button className={cx('btn', 'btn--primary')} onClick={handleRegister}>
+                                        <button
+                                            className={cx('btn', 'btn--primary')}
+                                            disabled={!password || !email || !confirmPassword}
+                                            onClick={handleRegister}
+                                        >
                                             ĐĂNG KÝ
                                         </button>
                                     </div>
@@ -209,23 +260,37 @@ function Header() {
                                     </div>
 
                                     <div className={cx('auth-form__form')}>
+                                        <div
+                                            className={cx('auth-form__error')}
+                                            style={error ? { display: 'flex' } : { display: 'none' }}
+                                        >
+                                            <div className={cx('auth-form__error-icon')}>
+                                                <FontAwesomeIcon icon={faCircleXmark} className={cx('icon')} />
+                                            </div>
+                                            <div className={cx('auth-form__error-text')}>
+                                                <div>
+                                                    Đăng nhập KHÔNG thành công. Bạn vui lòng thử lại hoặc đăng nhập bằng
+                                                    cách khác nhé!
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div className={cx('auth-form__group')}>
                                             <input
                                                 type="text"
                                                 className={cx('auth-form__input')}
-                                                placeholder="Username của bạn"
-                                                value={username}
-                                                onChange={handleOnChangeUserName}
+                                                placeholder="Email của bạn"
+                                                value={emailLogin}
+                                                onChange={handleOnChangeEmailLogin}
                                             />
                                         </div>
-
                                         <div className={cx('auth-form__group')}>
                                             <input
                                                 type="password"
                                                 className={cx('auth-form__input')}
                                                 placeholder="Mật khẩu của bạn"
-                                                value={password}
-                                                onChange={handleOnChangePassword}
+                                                value={passwordLogin}
+                                                onChange={handleOnChangePasswordLogin}
                                             />
                                         </div>
                                     </div>
@@ -248,11 +313,15 @@ function Header() {
                                     <div className={cx('auth-form__controls')}>
                                         <button
                                             className={cx('btn--normal', 'btn', 'auth-form__controls-back')}
-                                            onClick={() => setRegister(false)}
+                                            onClick={() => setModal(false)}
                                         >
                                             TRỞ LẠI
                                         </button>
-                                        <button className={cx('btn', 'btn--primary')} onClick={handleLogin}>
+                                        <button
+                                            className={cx('btn', 'btn--primary')}
+                                            onClick={handleLogin}
+                                            disabled={!emailLogin || !passwordLogin}
+                                        >
                                             ĐĂNG NHẬP
                                         </button>
                                     </div>

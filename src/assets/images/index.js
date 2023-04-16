@@ -5,6 +5,7 @@ const images = {
     messenger: require('~/assets/images/messenger.svg').default,
     telegram: require('~/assets/images/telegram.svg').default,
     emptyCart: require('~/assets/images/empty-cart.svg').default,
+    nonProduct: require('~/assets/images/non-product.svg').default,
     noImage: require('~/assets/images/no-image.png'),
 };
 

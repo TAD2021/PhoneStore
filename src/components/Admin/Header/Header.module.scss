@@ -1,0 +1,28 @@
+.wrapper {
+    height: 69px;
+    border-bottom: 1px solid #7777;
+    background-color: white;
+}
+
+.inner {
+    padding: 0 16px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left {
+    display: flex;
+    :not(:first-child) {
+        margin-left: 20px;
+    }
+}
+
+.logout {
+    background-color: var(--primary-color) !important;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}

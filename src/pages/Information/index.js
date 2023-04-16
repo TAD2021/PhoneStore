@@ -1,22 +1,32 @@
 import styles from './Information.module.scss';
 import classNames from 'classnames/bind';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboardList, faPen, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import Profile from '~/components/Profile';
 import Password from '~/components/Password';
 import Purchase from '~/components/Purchase';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function Information() {
     const [dropdown, setDropdown] = useState(true);
     const [str, setStr] = useState('');
+    const user = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => (dropdown ? setStr('dropdown--open') : setStr('')), [dropdown]);
 
     let { slug } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -31,10 +41,12 @@ function Information() {
                             </div>
                         </Link>
                         <div className={cx('edit_profile')}>
-                            <div className={cx('name')}>Thongle</div>
+                            <div className={cx('name')}>{user?.name}</div>
                             <div className={cx('edit')}>
                                 <FontAwesomeIcon icon={faPen} className={cx('icon')} />
-                                <span>Sửa hồ sơ</span>
+                                <Link to="/users/account/profile">
+                                    <span>Sửa hồ sơ</span>
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 import styles from './ProductDetail.module.scss';
 import classNames from 'classnames/bind';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCartPlus,
@@ -9,33 +9,77 @@ import {
     faLocationDot,
     faMinus,
     faPlus,
+    faStar,
 } from '@fortawesome/free-solid-svg-icons';
-// import Slider from 'react-slick/lib/slider';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Thumbs } from 'swiper';
-import { useState } from 'react';
-import './Swiper.scss';
+import { useEffect, useState } from 'react';
+
+import * as productService from '~/services/productService';
+import * as ratingService from '~/services/ratingService';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '~/redux/cartSlice';
+import images from '~/assets/images';
+import RatingModal from './RatingModal';
 
 const cx = classNames.bind(styles);
 
 function ProductDetail() {
-    const [activeThumb, setActiveThumb] = useState();
+    const [detail, setDetail] = useState(['']);
+    const [rating, setRating] = useState(['']);
+    const [star, setStar] = useState(0);
+    const [quantity, setQuantity] = useState(1);
+    const [modal, setModal] = useState(false);
     let { slug } = useParams();
-    let location = useLocation();
-    console.log(slug, location);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // const images = [
-    //     'https://images.thinkgroup.vn/unsafe/1000x1000/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-06-thinkpro-2.png',
-    //     'https://images.thinkgroup.vn/unsafe/1000x1000/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-06-thinkpro-4.png',
-    //     'https://images.thinkgroup.vn/unsafe/1000x1000/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-06-thinkpro-5.png',
-    // ];
-    // const settings = {
-    //     dots: false,
-    //     infinite: true,
-    //     speed: 500,
-    //     slidesToShow: 1,
-    //     slidesToScroll: 1,
-    // };
+    console.log(star);
+
+    useEffect(() => window.scrollTo(0, 0), []);
+
+    useEffect(() => {
+        const getProduct = async () => {
+            const result = await productService.getAProduct(slug);
+            result ? setDetail(result) : navigate('/');
+        };
+        getProduct();
+        const getRating = async () => {
+            const result = await ratingService.getRatingByProduct(slug);
+            setRating(result);
+        };
+        getRating();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [slug]);
+
+    useEffect(() => {
+        const result = (rating.reduce((acc, current) => acc + current.rating, 0) / rating.length).toFixed(0);
+        setStar(parseInt(result));
+    }, [rating]);
+
+    const handleQuantity = (e) => {
+        const regex = /^[0-9]+$/;
+        (e.target.value.match(regex) || e.target.value === '') && setQuantity(e.target.value);
+    };
+
+    const handleReduceQuantity = () => {
+        setQuantity((prev) => prev - 1);
+    };
+
+    const handleIncreaseQuantity = () => {
+        setQuantity((prev) => prev + 1);
+    };
+
+    const handleAddToCart = () => {
+        dispatch(addToCart({ ...detail, quantity }));
+    };
+
+    const callbackRatingModal = (childrenData) => {
+        setModal(childrenData);
+    };
+
+    const VND = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
 
     return (
         <main className={cx('wrapper')}>
@@ -58,18 +102,15 @@ function ProductDetail() {
                         <div className={cx('right_container')}>
                             <div className={'box-shadow ' + cx('information')}>
                                 <div className={cx('information_header')}>
-                                    <h1>Surface Laptop 3 15</h1>
+                                    <h1>{detail.nameProduct}</h1>
                                 </div>
                                 <div className={cx('information_body')}>
                                     <div className={cx('version')}>
                                         <div>
-                                            <div>Phiên bản</div>
+                                            <div>Bộ nhớ</div>
                                             <div className={cx('version_list')}>
                                                 <div className={cx('version_item', 'active')}>
-                                                    <span>i7 10510U 8G, 1TB</span>
-                                                </div>
-                                                <div className={cx('version_item')}>
-                                                    <span>i7 10510U 8G, 1TB</span>
+                                                    <span>{detail.memory}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,24 +119,7 @@ function ProductDetail() {
                                             <div>Màu</div>
                                             <div className={cx('version_list')}>
                                                 <div className={cx('version_item', 'active')}>
-                                                    <span>Black</span>
-                                                </div>
-                                                <div className={cx('version_item')}>
-                                                    <span>Platinum</span>
-                                                </div>
-                                                <div className={cx('version_item')}>
-                                                    <span>Sandstone</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div>Loại hàng</div>
-                                            <div className={cx('version_list')}>
-                                                <div className={cx('version_item', 'active')}>
-                                                    <span>Outlet, nhập khẩu</span>
-                                                </div>
-                                                <div className={cx('version_item')}>
-                                                    <span>Used, nhập khẩu</span>
+                                                    <span>{detail.color}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -104,17 +128,17 @@ function ProductDetail() {
                                         <label>Số lượng</label>
                                         <div>
                                             <div className={cx('quantity')}>
-                                                <button disabled="disabled" aria-label="Giảm">
+                                                <button disabled={quantity === 1} onClick={handleReduceQuantity}>
                                                     <FontAwesomeIcon icon={faMinus} />
                                                 </button>
                                                 <input
                                                     max="99"
                                                     min="1"
                                                     inputMode="decimal"
-                                                    type="text"
-                                                    defaultValue="1"
+                                                    value={quantity}
+                                                    onChange={(e) => handleQuantity(e)}
                                                 />
-                                                <button aria-label="Tăng">
+                                                <button onClick={handleIncreaseQuantity}>
                                                     <FontAwesomeIcon icon={faPlus} />
                                                 </button>
                                             </div>
@@ -127,20 +151,95 @@ function ProductDetail() {
                                 </div>
                                 <div className={cx('information_footer')}>
                                     <div className={cx('price')}>
-                                        <span className={'text-primary ' + cx('price_discount')}>13.490.000</span>
+                                        <span className={'text-primary ' + cx('price_discount')}>
+                                            {VND.format(detail.price - detail.discount || detail.price)}
+                                        </span>
                                         <div>
-                                            <span>15.990.000</span>
-                                            <span className="text-primary ">-16%</span>
+                                            {detail.discount && (
+                                                <>
+                                                    <span>{VND.format(detail.price)}</span>
+                                                    <span className="text-primary ">
+                                                        -{(detail.price / detail.discount).toFixed(0)}%
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                     <div className={cx('buy')}>
                                         <div className={`text-white button-primary ${cx('buy_now')}`}>
                                             <span>Mua ngay</span>
                                         </div>
-                                        <div className={`text-white button-primary ${cx('add-to-cart')}`}>
+                                        <div
+                                            className={`text-white button-primary ${cx('add-to-cart')}`}
+                                            onClick={() => handleAddToCart()}
+                                        >
                                             <FontAwesomeIcon icon={faCartPlus} className={cx('icon')} />
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div className={'box-shadow ' + cx('attribute')}>
+                                <h2>Thông số kỹ thuật</h2>
+                                <div>
+                                    <span style={{ fontWeight: '600', color: 'red' }}>{detail.nameProduct} </span>
+                                    {detail.description}
+                                </div>
+                                <div className={cx('title')}>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Kích thước màn hình</span>
+                                        <span className={cx('text')}>{detail.screen}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Công nghệ màn hình</span>
+                                        <span className={cx('text')}>{detail.screenTech}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Camera sau</span>
+                                        <span className={cx('text')}>{detail.backCamera}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Camera trước</span>
+                                        <span className={cx('text')}>{detail.frontCamera}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Chipset</span>
+                                        <span className={cx('text')}>{detail.chipset}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Dung lượng Ram</span>
+                                        <span className={cx('text')}>{detail.ram}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Pin</span>
+                                        <span className={cx('text')}>{detail.pin}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Thẻ Sim</span>
+                                        <span className={cx('text')}>{detail.sim}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Hệ điều hành</span>
+                                        <span className={cx('text')}>{detail.os}</span>
+                                    </div>
+                                    <div className={cx('title_item')}>
+                                        <span className={cx('name')}>Độ phân giải màn hình</span>
+                                        <span className={cx('text')}>{detail.screenResolution}</span>
+                                    </div>
+                                </div>
+                                <div className={cx('more')}>
+                                    <span className="text--blue">Xem cấu hình chi tiết</span>
+                                </div>
+                            </div>
+                            <div className={'box-shadow ' + cx('transport')}>
+                                <div>
+                                    <h2>Vận chuyển</h2>
+                                    <span className="text--blue">Miễn phí (HN, TP.HCM)</span>
+                                </div>
+                            </div>
+                            <div className={'box-shadow ' + cx('guarantee')}>
+                                <div>
+                                    <h2>Bảo hành &#38; đổi trả</h2>
+                                    <span className="text--blue">18 tháng</span>
                                 </div>
                             </div>
                         </div>
@@ -149,89 +248,16 @@ function ProductDetail() {
                         <section className={'box-shadow ' + cx('media')}>
                             <div className={cx('media_thumb')}>
                                 <div className={'inset-0'}>
-                                    {/* <div className={cx('thumb_item', 'active')}>
-                                            <img
-                                                alt=""
-                                                src="https://images.thinkgroup.vn/unsafe/fit-in/200x200/filters:quality(100):background_color(white)/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                            />
-                                        </div>
-                                        <div className={cx('thumb_item')}>
-                                            <img
-                                                alt=""
-                                                src="https://images.thinkgroup.vn/unsafe/fit-in/200x200/filters:quality(100):background_color(white)/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                            />
-                                        </div> */}
-                                    <Swiper
-                                        onSwiper={setActiveThumb}
-                                        modules={[Navigation, Thumbs]}
-                                        className={'product-images-slider-thumbs ' + cx('thumb_list')}
-                                    >
-                                        <SwiperSlide>
-                                            <div className={cx('thumb_item')}>
-                                                <img
-                                                    alt=""
-                                                    src="https://images.thinkgroup.vn/unsafe/fit-in/200x200/filters:quality(100):background_color(white)/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                                />
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className={cx('thumb_item')}>
-                                                <img
-                                                    alt=""
-                                                    src="https://images.thinkgroup.vn/unsafe/fit-in/200x200/filters:quality(100):background_color(white)/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                                />
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className={cx('thumb_item')}>
-                                                <img
-                                                    alt=""
-                                                    src="https://images.thinkgroup.vn/unsafe/fit-in/200x200/filters:quality(100):background_color(white)/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                                />
-                                            </div>
-                                        </SwiperSlide>
-                                    </Swiper>
+                                    <div className={cx('thumb_item')}>
+                                        <img alt="" src={detail.image} />
+                                    </div>
                                 </div>
                             </div>
                             <div className={cx('media_main')}>
                                 <div className={cx('main_image')}>
-                                    {/* <img
-                                        alt=""
-                                        src="https://images.thinkgroup.vn/unsafe/fit-in/1000x1000/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                    /> */}
-                                    {/* <Slider {...settings} className={cx('slider')}>
-                                        {images.map((image, index) => (
-                                            <img key={index} src={image} alt="" />
-                                        ))}
-                                    </Slider> */}
-                                    <Swiper
-                                        loop={true}
-                                        modules={[Navigation, Thumbs]}
-                                        grabCursor={true}
-                                        navigation={true}
-                                        thumbs={{ swiper: activeThumb }}
-                                        className="product-images-slider"
-                                    >
-                                        <SwiperSlide>
-                                            <img
-                                                alt=""
-                                                src="https://images.thinkgroup.vn/unsafe/fit-in/1000x1000/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                            />
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <img
-                                                alt=""
-                                                src="https://images.thinkgroup.vn/unsafe/fit-in/1000x1000/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                            />
-                                        </SwiperSlide>
-
-                                        <SwiperSlide>
-                                            <img
-                                                alt=""
-                                                src="https://images.thinkgroup.vn/unsafe/fit-in/1000x1000/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/28/avita-liber-v14-intel-03-thinkpro-1.png"
-                                            />
-                                        </SwiperSlide>
-                                    </Swiper>
+                                    <div className="product-images-slider">
+                                        <img alt="" src={detail.image} />
+                                    </div>
                                     <div className={cx('change_image')}>
                                         <div className={cx('left_icon')}>
                                             <FontAwesomeIcon icon={faChevronLeft} />
@@ -243,52 +269,226 @@ function ProductDetail() {
                                 </div>
                             </div>
                         </section>
-                        <section className={'box-shadow ' + cx('attribute')}>
-                            <h2>Cấu hình đặc điểm</h2>
-                            <div className={cx('title')}>
-                                <div className={cx('title_item')}>
-                                    <span className={cx('name')}>CPU Name</span>
-                                    <span className={cx('text')}>Core i7 10510U</span>
+
+                        <section className={'box-shadow ' + cx('rating')}>
+                            <h3>Đánh giá và nhận xét {detail.nameProduct}</h3>
+                            <div className={cx('box-review')}>
+                                <div className={cx('box-review-score')}>
+                                    <p>
+                                        {rating.length > 0
+                                            ? (
+                                                  rating.reduce((acc, current) => acc + current.rating, 0) /
+                                                  rating.length
+                                              ).toFixed(1)
+                                            : 0}
+                                        /5
+                                    </p>
+                                    <div>
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={star >= 1 ? cx('star-icon', 'active') : cx('star-icon')}
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={star >= 2 ? cx('star-icon', 'active') : cx('star-icon')}
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={star >= 3 ? cx('star-icon', 'active') : cx('star-icon')}
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={star >= 4 ? cx('star-icon', 'active') : cx('star-icon')}
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faStar}
+                                            className={star === 5 ? cx('star-icon', 'active') : cx('star-icon')}
+                                        />
+                                    </div>
+                                    <p>
+                                        <strong>{rating.length}</strong> đánh giá và nhận xét
+                                    </p>
                                 </div>
-                                <div className={cx('title_item')}>
-                                    <span className={cx('name')}>CPU Name</span>
-                                    <span className={cx('text')}>Core i7 10510U</span>
-                                </div>
-                                <div className={cx('title_item')}>
-                                    <span className={cx('name')}>CPU Name</span>
-                                    <span className={cx('text')}>Core i7 10510U</span>
-                                </div>
-                                <div className={cx('title_item')}>
-                                    <span className={cx('name')}>CPU Name</span>
-                                    <span className={cx('text')}>Core i7 10510U</span>
-                                </div>
-                                <div className={cx('title_item')}>
-                                    <span className={cx('name')}>CPU Name</span>
-                                    <span className={cx('text')}>Core i7 10510U</span>
-                                </div>
-                                <div className={cx('title_item')}>
-                                    <span className={cx('name')}>CPU Name</span>
-                                    <span className={cx('text')}>Core i7 10510U</span>
-                                </div>
-                                <div className={cx('title_item')}>
-                                    <span className={cx('name')}>CPU Name</span>
-                                    <span className={cx('text')}>Core i7 10510U</span>
+                                <div className={cx('box-review-star')}>
+                                    <div className={cx('rating-level')}>
+                                        <div className={cx('star-count')}>
+                                            <span>5</span>
+                                            <div>
+                                                <FontAwesomeIcon icon={faStar} className={cx('star-icon')} />
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max={rating.length}
+                                            value={rating.reduce(
+                                                (acc, current) => (current.rating === 5 ? acc + 1 : acc),
+                                                0,
+                                            )}
+                                        ></progress>
+                                        <span>
+                                            {rating.reduce((acc, current) => (current.rating === 5 ? acc + 1 : acc), 0)}{' '}
+                                            đánh giá
+                                        </span>
+                                    </div>
+                                    <div className={cx('rating-level')}>
+                                        <div className={cx('star-count')}>
+                                            <span>4</span>
+                                            <div>
+                                                <FontAwesomeIcon icon={faStar} className={cx('star-icon')} />
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max={rating.length}
+                                            value={rating.reduce(
+                                                (acc, current) => (current.rating === 4 ? acc + 1 : acc),
+                                                0,
+                                            )}
+                                        ></progress>
+                                        <span>
+                                            {rating.reduce((acc, current) => (current.rating === 4 ? acc + 1 : acc), 0)}{' '}
+                                            đánh giá
+                                        </span>
+                                    </div>
+                                    <div className={cx('rating-level')}>
+                                        <div className={cx('star-count')}>
+                                            <span>3</span>
+                                            <div>
+                                                <FontAwesomeIcon icon={faStar} className={cx('star-icon')} />
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max={rating.length}
+                                            value={rating.reduce(
+                                                (acc, current) => (current.rating === 3 ? acc + 1 : acc),
+                                                0,
+                                            )}
+                                        ></progress>
+                                        <span>
+                                            {rating.reduce((acc, current) => (current.rating === 3 ? acc + 1 : acc), 0)}{' '}
+                                            đánh giá
+                                        </span>
+                                    </div>
+                                    <div className={cx('rating-level')}>
+                                        <div className={cx('star-count')}>
+                                            <span>2</span>
+                                            <div>
+                                                <FontAwesomeIcon icon={faStar} className={cx('star-icon')} />
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max={rating.length}
+                                            value={rating.reduce(
+                                                (acc, current) => (current.rating === 2 ? acc + 1 : acc),
+                                                0,
+                                            )}
+                                        ></progress>
+                                        <span>
+                                            {rating.reduce((acc, current) => (current.rating === 2 ? acc + 1 : acc), 0)}{' '}
+                                            đánh giá
+                                        </span>
+                                    </div>
+                                    <div className={cx('rating-level')}>
+                                        <div className={cx('star-count')}>
+                                            <span>1</span>
+                                            <div>
+                                                <FontAwesomeIcon icon={faStar} className={cx('star-icon')} />
+                                            </div>
+                                        </div>
+                                        <progress
+                                            max={rating.length}
+                                            value={rating.reduce(
+                                                (acc, current) => (current.rating === 1 ? acc + 1 : acc),
+                                                0,
+                                            )}
+                                        ></progress>
+                                        <span>
+                                            {rating.reduce((acc, current) => (current.rating === 1 ? acc + 1 : acc), 0)}{' '}
+                                            đánh giá
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={cx('more')}>
-                                <span className="text--blue">Xem cấu hình chi tiết</span>
+                            <p>Bạn đánh giá sao về sản phẩm này</p>
+                            <div className={cx('rating-now')}>
+                                <button onClick={() => setModal(true)}>Đánh giá ngay</button>
                             </div>
-                        </section>
-                        <section className={'box-shadow ' + cx('transport')}>
-                            <div>
-                                <h2>Vận chuyển</h2>
-                                <span className="text--blue">Miễn phí (HN, TP.HCM)</span>
-                            </div>
-                        </section>
-                        <section className={'box-shadow ' + cx('guarantee')}>
-                            <div>
-                                <h2>Bảo hành &#38; đổi trả</h2>
-                                <span className="text--blue">18 tháng</span>
+                            {modal && <RatingModal callbackRatingModal={callbackRatingModal} data={detail} />}
+                            <div className={cx('box-review-comment')}>
+                                {rating.map((ratingg, index) => (
+                                    <div className={cx('box-review-comment-item')} key={index}>
+                                        <div className={cx('box-review-comment-item-title')}>
+                                            <div className={cx('user')}>
+                                                <div className={cx('user-img')}>
+                                                    <img alt="" src={images.noImage} />
+                                                </div>
+                                                <span>{ratingg.username}</span>
+                                            </div>
+                                            <div className={cx('date-time')}>
+                                                {ratingg.date} {ratingg.time}
+                                            </div>
+                                        </div>
+                                        <div className={cx('box-review-comment-item-review')}>
+                                            <div className={cx('item-review-rating')}>
+                                                <strong>Đánh giá: </strong>
+                                                <div>
+                                                    <div className={cx('icon')}>
+                                                        <FontAwesomeIcon
+                                                            icon={faStar}
+                                                            className={cx('star-icon', 'active')}
+                                                        />
+                                                    </div>
+                                                    <div className={cx('icon')}>
+                                                        <FontAwesomeIcon
+                                                            icon={faStar}
+                                                            className={
+                                                                ratingg.rating >= 2
+                                                                    ? cx('star-icon', 'active')
+                                                                    : cx('star-icon')
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <div className={cx('icon')}>
+                                                        <FontAwesomeIcon
+                                                            icon={faStar}
+                                                            className={
+                                                                ratingg.rating >= 3
+                                                                    ? cx('star-icon', 'active')
+                                                                    : cx('star-icon')
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <div className={cx('icon')}>
+                                                        <FontAwesomeIcon
+                                                            icon={faStar}
+                                                            className={
+                                                                ratingg.rating >= 4
+                                                                    ? cx('star-icon', 'active')
+                                                                    : cx('star-icon')
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <div className={cx('icon')}>
+                                                        <FontAwesomeIcon
+                                                            icon={faStar}
+                                                            className={
+                                                                ratingg.rating === 5
+                                                                    ? cx('star-icon', 'active')
+                                                                    : cx('star-icon')
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className={cx('item-review-comment')}>
+                                                <div className={cx('comment-content')}>
+                                                    <p>
+                                                        <strong>Nhận xét: </strong>
+                                                        {ratingg.comment}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </section>
                     </div>

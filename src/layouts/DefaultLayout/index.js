@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import Header from '~/components/Header';
-import Categories from '~/components/Categories';
 import styles from './DefaultLayout.module.scss';
 import Footer from '~/components/Footer';
 
@@ -10,7 +9,6 @@ function DefaultLayout({ children }) {
     return (
         <div className={cx('wrapper')}>
             <Header />
-            <Categories />
             {children}
             <Footer></Footer>
         </div>

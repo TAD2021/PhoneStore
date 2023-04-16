@@ -11,7 +11,7 @@
         z-index: 10;
         background: rgb(255, 255, 255);
         border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
+        border-top-right-radius: 2px;   
         > div {
             flex: 1;
             display: flex;
@@ -90,7 +90,6 @@
                                     }
                                 }
                                 .have-img {
-                                    background-image: url('https://down-vn.img.susercontent.com/file/sg-11134201-23020-0y7mo9eie4mv7c');
                                     background-position: 50% center;
                                     background-size: cover;
                                     background-repeat: no-repeat;

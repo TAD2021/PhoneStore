@@ -2,7 +2,7 @@
     width: 100%;
     height: 375px;
     --mt: 20px;
-    margin-top: var(--mt);
+    margin-top: calc(var(--default-layout-header-height) + var(--mt));
     display: flex;
     justify-content: center;
 

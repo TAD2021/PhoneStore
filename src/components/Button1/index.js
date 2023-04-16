@@ -4,13 +4,15 @@ import styles from './Button.module.scss';
 
 const cx = classNames.bind(styles);
 
-const defaultFn = () => {};
+function Button(props, ref) {
+    const handleOnClick = () => {
+        if (props.handleActive) props.handleActive(props.index);
+    };
 
-function Button({ index, children, primary, handleActive = defaultFn, color, icon }, ref) {
     return (
-        <div className={cx('button', primary, color)} onClick={() => handleActive(index)} ref={ref}>
-            <span className={cx('info')}>{children}</span>
-            {icon && <span className={cx('icon')}>{icon}</span>}
+        <div className={cx('button', props.primary, props.color)} onClick={() => handleOnClick()} ref={ref}>
+            <span className={cx('info')}>{props.children}</span>
+            {props.icon && <span className={cx('icon')}>{props.icon}</span>}
         </div>
     );
 }

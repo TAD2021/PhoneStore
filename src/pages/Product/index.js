@@ -6,189 +6,119 @@ import Button from '~/components/Button1';
 import Products from '~/components/Products';
 import styles from './Product.module.scss';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import * as productService from '~/services/productService';
+import {
+    addColor,
+    addMemory,
+    addPrice,
+    addRam,
+    addTrademark,
+    filterProduct,
+    removeColor,
+    removeMemory,
+    removePrice,
+    removeRam,
+    removeTrademark,
+} from '~/redux/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import images from '~/assets/images';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-const datas = ['iphone', 'samsung', 'oppo'];
-const arranges = ['Nổi bật nhất', 'Giá thấp → cao', 'Giá cao → thấp'];
+const datas = ['apple', 'samsung', 'oppo', 'xiaomi', 'realme'];
+const arranges = ['Mới nhất', 'Giá thấp → cao', 'Giá cao → thấp'];
 const filters = [
-    { name: 'Thương hiệu', value: ['iphone', 'samsung', 'oppo'] },
-    { name: 'Màu sắc', value: ['Trắng', 'Đen', 'Đỏ '] },
-    { name: 'Nhu cầu', value: ['Chơi game', 'Học tập'] },
-    { name: 'Nguồn hàng', value: ['Chính hãng', 'Nhập khẩu'] },
-    { name: 'Tình trạng', value: ['Outlet', 'Used'] },
-    { name: 'Khoảng giá', value: ['Dưới 10tr', 'Từ 10tr đến 20tr', 'Từ 20tr đến 30tr', 'Từ 30tr đến 40tr'] },
-];
-
-const products = [
-    {
-        category: 'Điện thoại',
-        slug: 'phone',
-        product: [
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-                discount: 25,
-                slug: 'lo',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-                discount: 25,
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-            {
-                name: 'Surface Laptop 3 15',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/10/1/avita-liber-v14-intel-05-thinkpro-1.png',
-            },
-        ],
-    },
-    {
-        category: 'Ốp lưng',
-        slug: 'oplung',
-        product: [
-            {
-                name: 'Ôp lung',
-                price: '10.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/26/hp-victus-gaming-16-intel-thinkpro-1.png',
-            },
-        ],
-    },
-    {
-        category: 'Sạc & Sạc dự phòng',
-        slug: 'sale',
-        product: [
-            {
-                name: 'Sạc',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/26/hp-victus-gaming-16-intel-thinkpro-1.png',
-            },
-        ],
-    },
-    {
-        category: 'Tai nghe',
-        slug: 'headphone',
-        product: [
-            {
-                name: 'Tai nghe',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/26/hp-victus-gaming-16-intel-thinkpro-1.png',
-            },
-        ],
-    },
-    {
-        category: 'Miếng dán màn hình',
-        slug: 'accessorry',
-        product: [
-            {
-                name: 'Miếng dán màn hình',
-                price: '12.990.000',
-                img: 'https://images.thinkgroup.vn/unsafe/460x460/https://media-api-beta.thinkpro.vn/media/core/products/2022/9/26/hp-victus-gaming-16-intel-thinkpro-1.png',
-            },
-        ],
-    },
+    { name: 'Thương hiệu', value: [...datas] },
+    { name: 'Màu sắc', value: ['Trắng', 'Đen', 'Đỏ', 'Tím', 'Vàng', 'Bạc'] },
+    { name: 'Bộ nhớ trong', value: ['128 GB', '256 GB', '512 GB', '1 TB'] },
+    { name: 'Dung lượng ram', value: ['4 GB', '6 GB', '8 GB', '12 GB', '16 GB'] },
 ];
 
 function Product() {
-    // let { slug } = useParams();
-    // console.log(slug);
-    // const [page, setPage] = useState(0);
-    // useEffect(() => {
-    //     setPage(() => products.findIndex((product) => product.slug === slug));
-    // }, [slug]);
-
     const [quantity, setQuantity] = useState(10);
+    const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
+    const trademark = useSelector((state) => state.product.filter.trademark);
+    const color = useSelector((state) => state.product.filter.color);
+    const memory = useSelector((state) => state.product.filter.memory);
+    const ram = useSelector((state) => state.product.filter.ram);
+    const price = useSelector((state) => state.product.filter.price);
+    const productfil = useSelector((state) => state.product.product);
+
+    const [sort, setSort] = useState(0);
+
     const handleQuantity = () => {
-        return setQuantity((prev) => prev + 10);
+        setQuantity((prev) => prev + 10);
     };
+
+    const handleChangeSort = (e) => {
+        setSort(parseInt(e.target.id));
+    };
+
+    useEffect(() => {
+        dispatch(filterProduct(products));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [trademark, color, memory, ram, price, products]);
+
+    const handleChangeFilter = (e) => {
+        if (filters[0].value.includes(e.target.value)) {
+            const value = e.target.value;
+            if (e.target.checked) {
+                dispatch(addTrademark(value));
+            } else {
+                dispatch(removeTrademark(value));
+            }
+        } else if (filters[1].value.includes(e.target.value)) {
+            const value = e.target.value;
+            if (e.target.checked) {
+                dispatch(addColor(value));
+            } else {
+                dispatch(removeColor(value));
+            }
+        } else if (filters[2].value.includes(e.target.value)) {
+            const value = e.target.value;
+            if (e.target.checked) {
+                dispatch(addMemory(value));
+            } else {
+                dispatch(removeMemory(value));
+            }
+        } else if (filters[3].value.includes(e.target.value)) {
+            const value = e.target.value;
+            if (e.target.checked) {
+                dispatch(addRam(value));
+            } else {
+                dispatch(removeRam(value));
+            }
+        } else if (filters[4].value.includes(e.target.value)) {
+            const value = e.target.value;
+            if (e.target.checked) {
+                dispatch(addPrice(value));
+            } else {
+                dispatch(removePrice(value));
+            }
+        }
+    };
+
+    useEffect(() => {
+        const getProduct = async () => {
+            const result = await productService.getAllProduct();
+            setProducts(result);
+            return result;
+        };
+        getProduct();
+    }, []);
+
+    useEffect(() => {
+        const temp = products.slice();
+        console.log(temp);
+        if (sort === 2) temp.sort((a, b) => b.price - a.price);
+        else if (sort === 1) temp.sort((a, b) => a.price - b.price);
+        setProducts(temp);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sort]);
 
     return (
         <main className={cx('wrapper')}>
@@ -226,6 +156,7 @@ function Product() {
                                                         name="arrange"
                                                         value={arrange}
                                                         defaultChecked={index === 0}
+                                                        onChange={handleChangeSort}
                                                     />
                                                     <label htmlFor={index}>{arrange}</label>
                                                 </div>
@@ -234,7 +165,9 @@ function Product() {
                                     </div>
                                 )}
                             >
-                                <Button icon={<FontAwesomeIcon icon={faChevronDown} />}>Sắp xếp: {arranges[0]}</Button>
+                                <Button icon={<FontAwesomeIcon icon={faChevronDown} />}>
+                                    Sắp xếp: {arranges[sort]}
+                                </Button>
                             </HeadlessTippy>
                         </div>
                         {filters.map((filter, index) => (
@@ -247,28 +180,25 @@ function Product() {
                                     render={(attrs) => (
                                         <div tabIndex="-1" {...attrs}>
                                             <PopperWrapper>
-                                                <div className={cx('arrange_item')}>
-                                                    <input
-                                                        type="radio"
-                                                        id={'all' + index}
-                                                        name={filter.name}
-                                                        value="all"
-                                                        defaultChecked
-                                                    />
-                                                    <label htmlFor={'all' + index}>Tất cả</label>
-                                                </div>
                                                 <div className={cx('filter_wrapper')}>
-                                                {filter.value.map((newvalue, index) => (
+                                                    {filter.value.map((newvalue, index) => (
                                                         <div className={cx('filter_itemm')} key={index}>
-                                                        <input
-                                                            type="checkbox"
-                                                            id={index}
-                                                            name="arrange"
-                                                            value={newvalue}
-                                                        />
-                                                        <label htmlFor={index}>{newvalue}</label>
-                                                    </div>
-                                                ))}
+                                                            <input
+                                                                type="checkbox"
+                                                                id={index}
+                                                                name={'arrange' + index}
+                                                                value={newvalue}
+                                                                checked={
+                                                                    trademark.includes(newvalue) ||
+                                                                    color.includes(newvalue) ||
+                                                                    memory.includes(newvalue) ||
+                                                                    ram.includes(newvalue)
+                                                                }
+                                                                onChange={handleChangeFilter}
+                                                            />
+                                                            <label htmlFor={index}>{newvalue}</label>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </PopperWrapper>
                                         </div>
@@ -281,12 +211,31 @@ function Product() {
                     </div>
                 </div>
 
-                <div className={cx('product')}>
-                    <Products products={products[0].product.slice(0, quantity)} category={products[0].slug} />
-                    <div className={cx('more_product')}>
-                        <button onClick={() => handleQuantity()}>Xem thêm</button>
+                {(trademark?.length > 0 ||
+                    color?.length > 0 ||
+                    memory?.length > 0 ||
+                    ram?.length > 0 ||
+                    price?.length > 0 ||
+                    price?.length > 0) &&
+                productfil?.length === 0 ? (
+                    <div className={cx('non-product')}>
+                        <img src={images.nonProduct} alt="" />
+                        <div>
+                            <span>Không có kết quả</span>
+                            <p>Đừng lo, ThinkPro luôn sẵn sàng tư vấn miễn phí nếu bạn cần hỗ trợ thêm</p>
+                            <Link to="/">
+                                <button>Tư vấn miễn phí</button>
+                            </Link>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className={cx('product')}>
+                        <Products products={productfil.length !== 0 ? productfil : products.slice(0, quantity)} />
+                        <div className={cx('more_product')}>
+                            <button onClick={handleQuantity}>Xem thêm</button>
+                        </div>
+                    </div>
+                )}
             </div>
         </main>
     );

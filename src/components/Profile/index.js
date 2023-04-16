@@ -1,11 +1,24 @@
 import { Fragment, useEffect, useState } from 'react';
 import styles from './Profile.module.scss';
 import classNames from 'classnames/bind';
+import { useDispatch, useSelector } from 'react-redux';
+import { createAxios } from '~/createInstance';
+import { loginSuccess } from '~/redux/authSlice';
+import * as authService from '~/services/authService';
+
 const cx = classNames.bind(styles);
 
 function Profile() {
     const [avatar, setAvatar] = useState();
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const [name, setName] = useState(user?.name);
+    const [email, setEmail] = useState(user?.email);
+    const [phone, setPhone] = useState(user?.phone);
+    const [address, setAddress] = useState(user?.address);
+    const [specificAddress, setSpecificAddress] = useState(user?.specificAddress);
+    const dispatch = useDispatch();
 
+    let axiosJWT = createAxios(user, dispatch, loginSuccess);
     useEffect(() => {
         //Cleanup
         return () => {
@@ -17,6 +30,21 @@ function Profile() {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
         setAvatar(file);
+    };
+
+    const handleUpdateProfile = async () => {
+        const userData = {
+            name,
+            email,
+            phone,
+            address,
+            specificAddress,
+        };
+
+        console.log(userData);
+        const accessToken = user.accessToken;
+        const value = window.confirm('Xác nhận cập nhật thông tin');
+        value && (await authService.updateUser(axiosJWT, userData, accessToken, dispatch, user._id));
     };
     return (
         <Fragment>
@@ -30,31 +58,50 @@ function Profile() {
                         <table>
                             <tbody>
                                 <tr>
-                                    <td>Tên đăng nhập</td>
-                                    <td>Thongle</td>
+                                    <td>Email</td>
+                                    <td>
+                                        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Tên</td>
                                     <td>
-                                        <input type="text" />
+                                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Số điện thoại</td>
+                                    <td>
+                                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Email</td>
-                                    <td>thongle6636@gmail.com</td>
-                                </tr>
-                                <tr>
-                                    <td>Số điện thoại</td>
-                                    <td>0962922420</td>
-                                </tr>
-                                <tr>
                                     <td>Địa chỉ</td>
-                                    <td>50/15 Lê Thị Hồng, P17, Q.Gò Vấp</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            value={address}
+                                            onChange={(e) => setAddress(e.target.value)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Địa chỉ cụ thể</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            value={specificAddress}
+                                            onChange={(e) => setSpecificAddress(e.target.value)}
+                                        />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <button className={'button-primary'}>Lưu</button>
+                                        <button className={'button-primary'} onClick={handleUpdateProfile}>
+                                            Lưu
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>

@@ -1,0 +1,72 @@
+.wrapper {
+    padding: 8px 16px;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        tr {
+            border-bottom: 1px solid #888;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 8px 0;
+            img {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        td {
+            max-width: 250px;
+        }
+
+        .update,
+        .delete,
+        .info {
+            button {
+                border-radius: 4px;
+                min-width: 50px;
+                height: 30px;
+                padding: 0 4px;
+                color: white;
+                cursor: pointer;
+            }
+
+            .update_icon {
+                background-color: blue;
+            }
+            .delete_icon {
+                background-color: red;
+            }
+
+            .info_icon {
+                background-color: orange;
+            }
+        }
+    }
+    .order_list {
+        margin-top: 20px;
+    }
+}
+
+.searchWrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    height: 26px;
+    align-items: center;
+
+    input {
+        border: 1px solid #888;
+        margin-right: 4px;
+        padding: 8px 12px;
+        border-radius: 4px;
+        width: 200px;
+    }
+    .searchIcon {
+        font-size: 2rem;
+    }
+}

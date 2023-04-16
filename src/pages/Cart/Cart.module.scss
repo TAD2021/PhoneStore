@@ -5,6 +5,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: var(--default-layout-header-height);
 }
 
 .container {
@@ -64,6 +65,7 @@
                     .discover {
                         margin-top: 32px;
                         button {
+                            cursor: pointer;
                             height: 44px;
                             padding: 0 12px;
                             --tw-bg-opacity: 1;

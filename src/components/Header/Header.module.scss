@@ -158,7 +158,7 @@
     bottom: 0;
     left: 0;
     display: flex;
-    animation: fadeIn linear 0.1s;
+    animation: fadeIn linear 0.3s;
 }
 
 .modal__overlay {
@@ -179,7 +179,7 @@
 /* Authen modal */
 .auth-form {
     width: 500px;
-    border-radius: 2px;
+    border-radius: 8px;
     background-color: var(--white-color);
     overflow: hidden;
     padding-top: 10px;
@@ -206,6 +206,33 @@
     font-weight: 400;
     color: var(--primary-color);
     cursor: pointer;
+}
+
+.auth-form__error {
+    background-color: #fff9fa;
+    border: 1px solid rgba(255, 66, 79, 0.2);
+    padding: 12px 15px;
+    display: flex;
+}
+
+.auth-form__error-icon {
+    margin-right: 10px;
+    width: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .icon {
+        color: #ff424f;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.auth-form__error-text {
+    > div {
+        font-size: 1.4rem;
+        color: #222;
+    }
 }
 
 .auth-form__input {
@@ -242,6 +269,13 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 80px;
+
+    button {
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    }
 }
 
 .auth-form__controls-back {
@@ -261,13 +295,16 @@
 }
 
 .auth-form__socials--facebook {
-    color: var(--white-color);
+    color: white;
     background-color: #3a5a98;
+    .auth-form__socials-title {
+        color: white;
+    }
 }
 
 .auth-form__socials--facebook {
     .auth-form__socials-icon {
-        color: var(--white-color);
+        color: white;
     }
 }
 
@@ -299,4 +336,9 @@
 
 .auth-form__help-forgot {
     color: var(--primary-color) !important;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }

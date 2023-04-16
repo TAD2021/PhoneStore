@@ -1,0 +1,49 @@
+.wrapper {
+    padding: 8px 16px;
+}
+
+.body {
+    margin-top: 20px;
+    .product_list {
+        margin-top: 20px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            tr {
+                border-bottom: 1px solid #888;
+            }
+            th,
+            td {
+                padding: 8px 0;
+                text-align: center;
+            }
+        }
+
+        .delete {
+            button {
+                border-radius: 4px;
+                width: 50px;
+                height: 30px;
+                color: white;
+                cursor: pointer;
+            }
+
+            .delete_icon {
+                background-color: red;
+            }
+        }
+    }
+}
+
+.save {
+    background-color: var(--primary-color) !important;
+    margin-top: 20px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    &:disabled {
+        opacity: 0.6;
+    }
+}

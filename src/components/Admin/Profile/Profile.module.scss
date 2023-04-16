@@ -1,0 +1,52 @@
+.wrapper {
+    padding: 8px 16px;
+
+    button {
+        margin-top: 20px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+        &.update {
+            background-color: rgb(38, 207, 142) !important;
+        }
+
+        &.change_password {
+            margin-left: 10px;
+            background-color: #1a73e8 !important;
+        }
+    }
+    table {
+        width: 100%;
+        tr {
+            display: flex;
+            td {
+                padding: 6px 0;
+                line-height: 150%;
+                min-width: 150px;
+                height: 46px;
+                &:last-child {
+                    flex: 1;
+                    padding-left: 20px;
+                }
+                input {
+                    border: 1px solid;
+                    height: 100%;
+                    width: 100%;
+                    padding: 0 10px;
+                    --tw-border-opacity: 1;
+                    border-color: rgb(var(--b3) / var(--tw-border-opacity));
+                    border-radius: 4px;
+                }
+
+                button {
+                    color: white;
+                    font-size: 1.6rem;
+                    padding: 6px 10px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

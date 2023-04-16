@@ -4,9 +4,9 @@ import styles from './Advertisement.module.scss';
 
 const cx = classNames.bind(styles);
 const images = [
-    'https://media-api-beta.thinkpro.vn/media/core/banners/2023/2/21/1920x1080.png',
-    'https://media-api-beta.thinkpro.vn/media/core/banners/2023/1/4/nho.png',
-    'https://media-api-beta.thinkpro.vn/media/core/banners/2023/2/2/banner-g.png',
+    'https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/oppo-sliding-new-moban.png',
+    'https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/mo-ban-a34-sli-new-27.png',
+    'https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/s22-ultra-sliding-hotsale.png',
 ];
 
 function Advertisement() {

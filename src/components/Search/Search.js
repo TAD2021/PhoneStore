@@ -4,12 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 
-import * as searchService from '~/services/searchService';
+import * as productService from '~/services/productService';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { useDebounce } from '~/hooks';
 import styles from './Search.module.scss';
-// import Productsearch from '../Productsearch';
-import AccountItem from '~/components/AccountItem';
+import Productsearch from '../Productsearch';
 
 const cx = classNames.bind(styles);
 
@@ -31,9 +30,8 @@ function Search() {
 
         const fetchApi = async () => {
             setLoading(true);
-            console.log(debouncedValue);
 
-            const result = await searchService.search(debouncedValue);
+            const result = await productService.searchProduct(debouncedValue);
             setSearchResult(result);
 
             setLoading(false);
@@ -65,13 +63,13 @@ function Search() {
         <div>
             <HeadlessTippy
                 interactive
-                visible={showResult && searchResult.length > 0}
+                visible={showResult && searchResult?.length > 0}
                 render={(attrs) => (
                     <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                         <PopperWrapper>
                             <h4 className={cx('search-title')}>Sản phẩm</h4>
-                            {searchResult.map((result) => (
-                                <AccountItem key={result.id} data={result} />
+                            {searchResult?.map((result, index) => (
+                                <Productsearch key={index} result={result} />
                             ))}
                         </PopperWrapper>
                     </div>

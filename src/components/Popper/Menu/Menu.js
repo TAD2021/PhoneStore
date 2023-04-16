@@ -6,12 +6,24 @@ import MenuItem from './MenuItem';
 import Header from './Header';
 import styles from './Menu.module.scss';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as authService from '~/services/authService';
+
+import { loginSuccess } from '~/redux/authSlice';
+import { createAxios } from '~/createInstance';
 
 const cx = classNames.bind(styles);
 
 function Menu({ children, items = [], hideOnClick = false }) {
     const [history, setHistory] = useState([{ data: items }]);
     const current = history[history.length - 1];
+    const dispatch = useDispatch();
+
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const token = useSelector((state) => state.auth.login.currentUser.accessToken);
+
+    let axiosJWT = createAxios(user, dispatch, loginSuccess);
+
     const renderItems = () => {
         return current.data.map((item, index) => {
             const isParent = !!item.children;
@@ -23,6 +35,9 @@ function Menu({ children, items = [], hideOnClick = false }) {
                     onClick={() => {
                         if (isParent) {
                             setHistory((prev) => [...prev, item.children]);
+                        } else if (index === current.data.length - 1) {
+                            // Log out here
+                            handleLogout();
                         }
                     }}
                 />
@@ -32,6 +47,10 @@ function Menu({ children, items = [], hideOnClick = false }) {
 
     const handleBack = () => {
         setHistory((prev) => prev.slice(0, prev.length - 1));
+    };
+
+    const handleLogout = () => {
+        authService.logout(dispatch, token, axiosJWT);
     };
 
     const renderResult = (attrs) => (
