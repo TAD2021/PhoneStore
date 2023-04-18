@@ -8,6 +8,7 @@ import ProductDetail from '~/pages/ProductDetail';
 import Information from '~/pages/Information';
 import Checkout from '~/pages/Checkout';
 import AdminLogin from '~/pages/AdminLogin';
+import ForgotPassword from '~/pages/ForgotPassword';
 import ResetPassword from '~/pages/ResetPassword';
 
 import AdminLayout from '~/layouts/AdminLayout';
@@ -20,6 +21,7 @@ const publishRoutes = [
     { path: config.routes.adminLogin, component: AdminLogin, layout: AdminLoginLayout },
     { path: config.routes.admin, component: Admin, layout: AdminLayout },
     { path: config.routes.phone, component: Product },
+    { path: config.routes.forgotPassword, component: ForgotPassword },
     { path: config.routes.resetPassword, component: ResetPassword },
     { path: config.routes.productDetail, component: ProductDetail },
     { path: config.routes.profile, component: Information },

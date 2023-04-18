@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAxios } from '~/createInstance';
 import { loginSuccess } from '~/redux/authSlice';
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Password() {
@@ -49,7 +50,9 @@ function Password() {
                                             onChange={(e) => setOldPassword(e.target.value)}
                                         />
                                     </div>
-                                    <button>Quên mật khẩu ?</button>
+                                    <Link to="/users/forgotpassword">
+                                        <button>Quên mật khẩu ?</button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

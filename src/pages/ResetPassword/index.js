@@ -1,19 +1,24 @@
 import styles from './ResetPassword.module.scss';
 import classNames from 'classnames/bind';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import * as authService from '~/services/authService';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
+import * as authService from '~/services/authService';
 
 const cx = classNames.bind(styles);
 
 function ResetPassword() {
-    const [email, setEmail] = useState('');
+    let { token } = useParams();
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleResetPassword = async () => {
-        const res = await authService.resetPassword(email);
-
-        console.log(res);
+        const res = await authService.resetPassword(password, token);
+        if (res) {
+            alert('Thành công');
+            navigate('/');
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -25,24 +30,19 @@ function ResetPassword() {
                                 <FontAwesomeIcon icon={faArrowLeft} />
                             </div>
                         </div>
-                        <div>Quên mật khẩu</div>
+                        <div>Đặt lại mật khẩu</div>
                     </div>
                 </div>
+
                 <div className={cx('body')}>
-                    <p>Gửi mã xác nhận để lấy lại mật khẩu</p>
+                    <p>Nhập mật khẩu mới</p>
                     <div>
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <div>
-                            <div className={cx('cps-icon')}>
-                                <FontAwesomeIcon icon={faEnvelope} className={cx('icon')} />
-                            </div>
-                            <div className={cx('method_content')}>
-                                <p className={cx('content__name')}>Qua email</p>
-                                <p className={cx('content')}>
-                                    <input value={email} onChange={(e) => setEmail(e.target.value)} />
-                                </p>
-                            </div>
+                            <button onClick={handleResetPassword} disabled={!password}>
+                                Xác nhận
+                            </button>
                         </div>
-                        <div onClick={handleResetPassword}>Tiếp tục</div>
                     </div>
                 </div>
             </div>

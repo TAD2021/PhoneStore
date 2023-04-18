@@ -5,7 +5,8 @@ const routes = {
     admin: '/admin/:slug',
     checkout: '/checkout',
     phone: '/phone',
-    resetPassword: '/users/resetpassword',
+    forgotPassword: '/users/forgotpassword',
+    resetPassword: '/users/resetpassword/:token',
     productDetail: '/:product/:slug',
     profile: '/users/account/:slug',
 };

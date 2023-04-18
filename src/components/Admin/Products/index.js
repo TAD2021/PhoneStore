@@ -2,13 +2,14 @@ import styles from './Products.module.scss';
 import classNames from 'classnames/bind';
 import { Fragment, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import * as productService from '~/services/productService';
+import ProductModal from './ProductModal';
 
 const cx = classNames.bind(styles);
 
 function Products() {
-    const [nameProduct, setNameProduct] = useState();
+    const [nameProduct, setNameProduct] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
@@ -20,7 +21,7 @@ function Products() {
     const [screen, setScreen] = useState('');
     const [image, setImage] = useState('');
     const [color, setColor] = useState('');
-    const [discount, setDiscount] = useState();
+    const [discount, setDiscount] = useState('');
     const [trademark, setTrademark] = useState('');
     const [screenTech, setScreenTech] = useState('');
     const [frontCamera, setFrontCamera] = useState('');
@@ -28,11 +29,12 @@ function Products() {
     const [sim, setSim] = useState('');
     const [screenResolution, setScreenResolution] = useState('');
 
-    const [id, setId] = useState('');
-
     const [show, setShow] = useState('');
     const [products, setProducts] = useState();
     const [modal, setModal] = useState(false);
+
+    //Updata modal
+    const [product, setProduct] = useState('');
 
     //Phân trang
     const [currentPage, setCurrentPage] = useState(1);
@@ -99,84 +101,18 @@ function Products() {
     const handleShowModal = (e) => {
         if (products.find((element) => element._id === e.target.value)) {
             const product = products.find((element) => element._id === e.target.value);
-            setId(product._id);
-            setNameProduct(product.nameProduct);
-            setDescription(product.description);
-            setPrice(product.price);
-            setQuantity(product.quantity);
-            setRam(product.ram);
-            setMemory(product.memory);
-            setChipset(product.chipset);
-            setPin(product.pin);
-            setOS(product.os);
-            setScreen(product.screen);
-            setImage(product.image);
-            setColor(product.color);
-            setDiscount(product.discount);
-            setTrademark(product.trademark);
-            setScreenTech(product.screenTech);
-            setFrontCamera(product.frontCamera);
-            setBackCamera(product.backCamera);
-            setSim(product.sim);
-            setScreenResolution(product.screenResolution);
-
+            setProduct(product);
             setModal(true);
         }
-    };
-
-    const handleHide = () => {
-        setNameProduct('');
-        setDescription('');
-        setPrice('');
-        setQuantity('');
-        setRam('');
-        setMemory('');
-        setChipset('');
-        setPin('');
-        setOS('');
-        setScreen('');
-        setImage('');
-        setColor('');
-        setDiscount('');
-        setTrademark('');
-        setScreenTech('');
-        setFrontCamera('');
-        setBackCamera('');
-        setSim('');
-        setScreenResolution('');
-        setModal(false);
-    };
-
-    const handleSubmit = async () => {
-        const data = {
-            nameProduct,
-            description,
-            price,
-            quantity,
-            ram,
-            memory,
-            chipset,
-            pin,
-            os,
-            screen,
-            image,
-            color,
-            discount,
-            trademark,
-            screenTech,
-            frontCamera,
-            backCamera,
-            sim,
-            screenResolution,
-        };
-        await productService.updateProduct(id, data);
-        alert('Cập nhật sản phẩm thành công');
-        handleHide();
     };
 
     const handleDelete = async (e) => {
         const value = window.confirm('Xác nhận xóa sản phẩm');
         value && (await productService.deleteProduct(e.target.value));
+    };
+
+    const callbackModal = (childrenData) => {
+        setModal(childrenData);
     };
 
     const VND = new Intl.NumberFormat('vi-VN', {
@@ -186,234 +122,7 @@ function Products() {
 
     return (
         <Fragment>
-            {modal && (
-                <div className={cx('modal')} onClick={(e) => handleHide(e)}>
-                    <div className={cx('modal__overlay')}></div>
-                    <div className={cx('modal__body')} onClick={(e) => e.stopPropagation()}>
-                        <div className={cx('wrapper')}>
-                            <div className={cx('header')}>
-                                <div className={cx('header_title')}>Sửa thông tin sản phẩm</div>
-                                <button className={cx('close_button')} onClick={(e) => handleHide(e)}>
-                                    <FontAwesomeIcon icon={faClose} className={cx('close')} />
-                                </button>
-                            </div>
-                            <div className={cx('body')}>
-                                <div>
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>Id sản phẩm</td>
-                                                <td>{id}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Tên sản phẩm</td>
-                                                <td>
-                                                    {products && (
-                                                        <input
-                                                            type="text"
-                                                            value={nameProduct}
-                                                            onChange={(e) => setNameProduct(e.target.value)}
-                                                        />
-                                                    )}
-                                                </td>
-                                            </tr>
-                                            <tr className={cx('text-area')}>
-                                                <td>Mô tả</td>
-                                                <td>
-                                                    <textarea
-                                                        rows="4"
-                                                        cols="50"
-                                                        value={description}
-                                                        onChange={(e) => setDescription(e.target.value)}
-                                                    ></textarea>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Giá</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={price}
-                                                        onChange={(e) => setPrice(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Số lượng</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={quantity}
-                                                        onChange={(e) => setQuantity(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Ram</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={ram}
-                                                        onChange={(e) => setRam(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Memory</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={memory}
-                                                        onChange={(e) => setMemory(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Chipset</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={chipset}
-                                                        onChange={(e) => setChipset(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Pin</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={pin}
-                                                        onChange={(e) => setPin(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Hệ điều hành</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={os}
-                                                        onChange={(e) => setOS(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Màn hình</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={screen}
-                                                        onChange={(e) => setScreen(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Hình ảnh</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={image}
-                                                        onChange={(e) => setImage(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Màu</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={color}
-                                                        onChange={(e) => setColor(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Giảm giá</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={discount}
-                                                        onChange={(e) => setDiscount(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Hãng</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={trademark}
-                                                        onChange={(e) => setTrademark(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Công nghệ màn hình</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={screenTech}
-                                                        onChange={(e) => setScreenTech(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Camera trước</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={frontCamera}
-                                                        onChange={(e) => setFrontCamera(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Camera sau</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={backCamera}
-                                                        onChange={(e) => setBackCamera(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Thẻ sim</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={sim}
-                                                        onChange={(e) => setSim(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Độ phân giải m.hình</td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={screenResolution}
-                                                        onChange={(e) => setScreenResolution(e.target.value)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>
-                                                    <button className={'button-primary'} onClick={() => handleSubmit()}>
-                                                        Lưu
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {modal && <ProductModal callbackModal={callbackModal} data={product} />}
             <div className={cx('wrapper')}>
                 <div className={cx('body')}>
                     <div className={cx('add_product')}>

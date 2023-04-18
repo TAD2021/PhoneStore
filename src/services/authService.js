@@ -34,16 +34,10 @@ export const login = async (email, password, dispatch) => {
     }
 };
 
-export const logout = async (dispatch, token, axiosJWT) => {
+export const logout = async (dispatch, token) => {
     dispatch(logoutStart());
     try {
-        const res = await axiosJWT.post(
-            '/auth/logout',
-            { status: 'logout' },
-            {
-                headers: { token: `Bearer ${token}` },
-            },
-        );
+        const res = await userRequest.post('/auth/logout', { token });
         dispatch(logoutSuccess(res));
     } catch (error) {
         dispatch(logoutFailed());
@@ -82,9 +76,18 @@ export const changePassword = async (axiosJWT, data, accessToken, id) => {
     }
 };
 
-export const resetPassword = async (email) => {
+export const forgotPassword = async (email) => {
     try {
         const res = await userRequest.post('/auth/forgot-password', { email });
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const resetPassword = async (newPassword, token) => {
+    try {
+        const res = await userRequest.patch('/auth/reset-password', { newPassword, token });
         return res;
     } catch (error) {
         console.log(error);

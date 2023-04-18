@@ -166,7 +166,10 @@ function ProductDetail() {
                                         </div>
                                     </div>
                                     <div className={cx('buy')}>
-                                        <div className={`text-white button-primary ${cx('buy_now')}`}>
+                                        <div
+                                            className={`text-white button-primary ${cx('buy_now')}`}
+                                            onClick={() => handleAddToCart()}
+                                        >
                                             <span>Mua ngay</span>
                                         </div>
                                         <div

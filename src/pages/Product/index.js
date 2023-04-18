@@ -113,9 +113,8 @@ function Product() {
 
     useEffect(() => {
         const temp = products.slice();
-        console.log(temp);
-        if (sort === 2) temp.sort((a, b) => b.price - a.price);
-        else if (sort === 1) temp.sort((a, b) => a.price - b.price);
+        if (sort === 2) temp.sort((a, b) => (b.price - b.discount || b.price) - (a.price - a.discount || a.price));
+        else if (sort === 1) temp.sort((a, b) => (a.price - a.discount || a.price) - (b.price - b.discount || b.price));
         setProducts(temp);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sort]);

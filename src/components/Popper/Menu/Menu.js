@@ -9,20 +9,13 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as authService from '~/services/authService';
 
-import { loginSuccess } from '~/redux/authSlice';
-import { createAxios } from '~/createInstance';
-
 const cx = classNames.bind(styles);
 
 function Menu({ children, items = [], hideOnClick = false }) {
     const [history, setHistory] = useState([{ data: items }]);
     const current = history[history.length - 1];
     const dispatch = useDispatch();
-
-    const user = useSelector((state) => state.auth.login.currentUser);
     const token = useSelector((state) => state.auth.login.currentUser.accessToken);
-
-    let axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const renderItems = () => {
         return current.data.map((item, index) => {
@@ -50,7 +43,7 @@ function Menu({ children, items = [], hideOnClick = false }) {
     };
 
     const handleLogout = () => {
-        authService.logout(dispatch, token, axiosJWT);
+        authService.logout(dispatch, token);
     };
 
     const renderResult = (attrs) => (

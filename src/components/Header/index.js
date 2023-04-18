@@ -11,9 +11,8 @@ import {
     faStore,
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Search from '../Search';
-import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useEffect, useState } from 'react';
 import Menu from '../Popper/Menu';
 import * as authService from '~/services/authService';
@@ -73,6 +72,7 @@ function Header() {
     const [emailLogin, setEmailLogin] = useState('');
     const [passwordLogin, setPasswordLogin] = useState('');
     const [error, setError] = useState(false);
+    const location = useLocation();
 
     const cart = useSelector((state) => state.cart.cart.length);
 
@@ -85,6 +85,8 @@ function Header() {
     const handleOnChangeConfirmPassword = (e) => setConfirmPassword(e.target.value);
     const handleOnChangeEmailLogin = (e) => setEmailLogin(e.target.value);
     const handleOnChangePasswordLogin = (e) => setPasswordLogin(e.target.value);
+
+    useEffect(() => setModal(false), [location]);
 
     const handleRegister = async () => {
         const regexEmail = new RegExp(/^([a-z0-9_-]+)@([\da-z-]+)\.([a-z]{2,6})$/);
@@ -298,7 +300,7 @@ function Header() {
                                     <div className={cx('auth-form__aside')}>
                                         <div className={cx('auth-form__help')}>
                                             <Link
-                                                to=""
+                                                to="/users/forgotpassword"
                                                 className={cx('auth-form__help-link', 'auth-form__help-forgot')}
                                             >
                                                 Quên mật khẩu
@@ -327,33 +329,6 @@ function Header() {
                                     </div>
                                 </div>
                             )}
-                            <div className={cx('auth-form__socials')}>
-                                <Link
-                                    to=""
-                                    className={cx(
-                                        'auth-form__socials--facebook',
-                                        'btn',
-                                        'btn--size-s',
-                                        'btn--width-icon',
-                                    )}
-                                >
-                                    <FontAwesomeIcon className={cx('auth-form__socials-icon')} icon={faFacebook} />
-                                    <div className={cx('auth-form__socials-title')}>Kết nối với Facebook</div>
-                                </Link>
-
-                                <Link
-                                    to=""
-                                    className={cx(
-                                        'auth-form__socials--google',
-                                        'btn',
-                                        'btn--size-s',
-                                        'btn--width-icon',
-                                    )}
-                                >
-                                    <FontAwesomeIcon className={cx('auth-form__socials-icon')} icon={faGoogle} />
-                                    <div className={cx('auth-form__socials-title')}>Kết nối với Google</div>
-                                </Link>
-                            </div>
                         </div>
                     </div>
                 </div>

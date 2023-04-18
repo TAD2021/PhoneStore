@@ -15,4 +15,9 @@ export const post = async (path, options = {}, headers = {}) => {
     return response.data;
 };
 
+export const patch = async (path, options = {}, headers = {}) => {
+    const response = await userRequest.patch(path, options, headers);
+    return response.data;
+};
+
 export default userRequest;

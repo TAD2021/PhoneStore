@@ -1,7 +1,7 @@
 import styles from './AdminLogin.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as authService from '~/services/authService';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,10 +17,17 @@ function AdminLogin() {
     const handleOnChangeUserName = (e) => setUsername(e.target.value);
     const handleOnChangePassword = (e) => setPassword(e.target.value);
 
+    const user = useSelector((state) => state.auth.login.currentUser);
+
     const handleLogin = async () => {
         await authService.login(username, password, dispatch);
         navigate('/admin/dashboard');
     };
+
+    useEffect(() => {
+        user?.admin && navigate('/admin/dashboard');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <main className={cx('wrapper')}>
             <div className={cx('container')}>

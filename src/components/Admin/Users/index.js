@@ -25,7 +25,7 @@ function Users() {
 
     const handleDelete = async (e) => {
         console.log(allUsers);
-        const value = window.confirm('Xác nhận xóa sản phẩm');
+        const value = window.confirm('Xác nhận xóa người dùng');
         value && (await userService.deleteUser(axiosJWT, user, allUsers[e.target.value]._id));
     };
     return (
