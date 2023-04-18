@@ -6,13 +6,16 @@ import styles from './Products.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Products({ products = [] }) {
+function Products({ products = [], rating }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid', 'product_list')}>
                 {products.map((product, index) => (
                     <Link to={'/phone/' + product._id} key={index}>
-                        <ProductItem product={product} />
+                        <ProductItem
+                            product={product}
+                            rating={rating.filter((newRating) => newRating.productId === product._id)}
+                        />
                     </Link>
                 ))}
             </div>

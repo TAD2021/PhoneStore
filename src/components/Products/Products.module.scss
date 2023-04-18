@@ -97,4 +97,17 @@
             opacity: 0.6;
         }
     }
+
+    .star_wrapper {
+        .star-icon {
+            font-size: 1.6rem;
+            margin: 0 2px;
+            &.no-star {
+                color: transparent;
+            }
+            &.active {
+                color: #f59e0b;
+            }
+        }
+    }
 }

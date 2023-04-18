@@ -25,6 +25,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import images from '~/assets/images';
 import { Link } from 'react-router-dom';
+import * as ratingService from '~/services/ratingService';
 
 const cx = classNames.bind(styles);
 
@@ -40,6 +41,9 @@ const filters = [
 function Product() {
     const [quantity, setQuantity] = useState(10);
     const [products, setProducts] = useState([]);
+    const [sort, setSort] = useState(0);
+    const [rating, setRating] = useState([]);
+
     const dispatch = useDispatch();
     const trademark = useSelector((state) => state.product.filter.trademark);
     const color = useSelector((state) => state.product.filter.color);
@@ -47,8 +51,6 @@ function Product() {
     const ram = useSelector((state) => state.product.filter.ram);
     const price = useSelector((state) => state.product.filter.price);
     const productfil = useSelector((state) => state.product.product);
-
-    const [sort, setSort] = useState(0);
 
     const handleQuantity = () => {
         setQuantity((prev) => prev + 10);
@@ -109,6 +111,12 @@ function Product() {
             return result;
         };
         getProduct();
+        const getRating = async () => {
+            const result = await ratingService.getAllRating();
+            setRating(result);
+        };
+        getRating();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -229,7 +237,10 @@ function Product() {
                     </div>
                 ) : (
                     <div className={cx('product')}>
-                        <Products products={productfil.length !== 0 ? productfil : products.slice(0, quantity)} />
+                        <Products
+                            products={productfil.length !== 0 ? productfil : products.slice(0, quantity)}
+                            rating={rating}
+                        />
                         <div className={cx('more_product')}>
                             <button onClick={handleQuantity}>Xem thêm</button>
                         </div>

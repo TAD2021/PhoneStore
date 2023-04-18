@@ -9,6 +9,15 @@ export const getRatingByProduct = async (id) => {
     }
 };
 
+export const getAllRating = async () => {
+    try {
+        const res = await ratingRequest.get(`/rating`);
+        return res?.rating;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const createRating = async (data) => {
     try {
         const res = await ratingRequest.post(`/rating`, { ...data });
