@@ -1,9 +1,9 @@
 import { orderProduct } from '~/redux/cartSlice';
-import * as orderRequest from '~/utils/orderRequest';
+import * as httpRequest from '~/utils/httpRequest';
 
 export const getAllOrder = async () => {
     try {
-        const res = await orderRequest.get('/order');
+        const res = await httpRequest.get('/order');
         return res.orders;
     } catch (error) {
         console.log(error);
@@ -12,26 +12,25 @@ export const getAllOrder = async () => {
 
 export const getOrderUser = async (id) => {
     try {
-        const res = await orderRequest.get(`/order/${id}`);
+        const res = await httpRequest.get(`/order/${id}`);
         return res.orders;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const createOrder = async (data, navigate, dispatch) => {
+export const createOrder = async (data, dispatch) => {
     try {
-        await orderRequest.post('/order', { ...data });
+        await httpRequest.post('/order', { ...data });
         dispatch(orderProduct());
-        navigate('/');
     } catch (error) {
         console.log(error);
     }
 };
 
-export const updateOrder = async (id, status) => {
+export const updateOrder = async (id, products, status) => {
     try {
-        const res = await orderRequest.put(`/order/${id}`, { status });
+        const res = await httpRequest.put(`/order/${id}`, { products, status });
         console.log(res);
     } catch (error) {
         console.log(error);
@@ -40,7 +39,7 @@ export const updateOrder = async (id, status) => {
 
 export const deleteOrder = async (id) => {
     try {
-        const res = await orderRequest.deleteOrder(`/order/${id}`);
+        const res = await httpRequest.deleteItem(`/order/${id}`);
         console.log(res);
     } catch (error) {
         console.log(error);

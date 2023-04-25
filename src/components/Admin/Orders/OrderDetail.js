@@ -1,30 +1,38 @@
 import styles from './OrderDetail.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faClose } from '@fortawesome/free-solid-svg-icons';
 import * as orderService from '~/services/orderService';
 
 const cx = classNames.bind(styles);
 
 function OrderDetail(props) {
     const [status, setStatus] = useState(props.data.status);
+    const [statusList, setStatusList] = useState(false);
     const VND = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
     });
     const handleUpdateOrder = () => {
         const updateOrder = async () => {
-            await orderService.updateOrder(props.data._id, status);
+            await orderService.updateOrder(props.data._id, props.data.products, status);
         };
         updateOrder();
         props.callbackOrderDetailModal(false);
     };
+
+    const handleStatusList = () => {
+        setStatusList(!statusList);
+    };
+
+    useEffect(() => setStatusList(false), [status]);
+
     return (
         <div className={cx('modal')} onClick={() => props.callbackOrderDetailModal(false)}>
             <div className={cx('modal__overlay')}></div>
             <div className={cx('modal__body')} onClick={(e) => e.stopPropagation()}>
-                <div className={cx('wrapper')}>
+                <div className={cx('wrapper')} onClick={() => setStatusList(false)}>
                     <div className={cx('inner')}>
                         <div className={cx('header')}>
                             <h3>Chi tiết đơn hàng</h3>
@@ -61,12 +69,29 @@ function OrderDetail(props) {
                                 </tr>
                                 <tr>
                                     <td>Trạng thái đơn hàng</td>
-                                    <td>
-                                        {status !== 'Chờ xác nhận' ? (
-                                            <input value={status} onChange={(e) => setStatus(e.target.value)} />
+                                    <td className={cx('status')}>
+                                        {status !== 'CHỜ XÁC NHẬN' ? (
+                                            <div
+                                                className={cx('status_container')}
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <input value={status} onClick={handleStatusList} readOnly />
+                                                <FontAwesomeIcon icon={faChevronDown} className={cx('status_icon')} />
+                                            </div>
                                         ) : (
                                             status
                                         )}
+                                        <div
+                                            className={cx('status_list')}
+                                            style={statusList ? { display: 'block' } : { display: 'none' }}
+                                        >
+                                            <div onClick={() => setStatus('ĐÃ HỦY')}>ĐÃ HỦY</div>
+                                            <div onClick={() => setStatus('VẬN CHUYỂN')}>VẬN CHUYỂN</div>
+                                            <div onClick={() => setStatus('HOÀN THÀNH')}>HOÀN THÀNH</div>
+                                            <div onClick={() => setStatus('TRẢ HÀNG/HOÀN TIỀN')}>
+                                                TRẢ HÀNG/HOÀN TIỀN
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

@@ -12,12 +12,12 @@ import {
     updateSuccess,
     updateFailed,
 } from '~/redux/authSlice';
-import * as userRequest from '~/utils/userRequest';
+import * as httpRequest from '~/utils/httpRequest';
 
 export const register = async (email, name, password, dispatch) => {
     dispatch(registerStart());
     try {
-        const res = await userRequest.post('/auth/register', { email, name, password });
+        const res = await httpRequest.post('user/auth/register', { email, name, password });
         dispatch(registerSuccess(res));
     } catch (error) {
         dispatch(registerFailed());
@@ -27,7 +27,7 @@ export const register = async (email, name, password, dispatch) => {
 export const login = async (email, password, dispatch) => {
     dispatch(loginStart());
     try {
-        const res = await userRequest.post('/auth/login', { email, password });
+        const res = await httpRequest.post('user/auth/login', { email, password });
         dispatch(loginSuccess(res));
     } catch (error) {
         dispatch(loginFailed());
@@ -37,7 +37,7 @@ export const login = async (email, password, dispatch) => {
 export const logout = async (dispatch, token) => {
     dispatch(logoutStart());
     try {
-        const res = await userRequest.post('/auth/logout', { token });
+        const res = await httpRequest.post('user/auth/logout', { token });
         dispatch(logoutSuccess(res));
     } catch (error) {
         dispatch(logoutFailed());
@@ -48,7 +48,7 @@ export const updateUser = async (axiosJWT, user, accessToken, dispatch, id) => {
     dispatch(updateStart());
     try {
         const res = await axiosJWT.put(
-            `/auth/${id}`,
+            `user/auth/${id}`,
             { ...user },
             {
                 headers: { token: `Bearer ${accessToken}` },
@@ -64,7 +64,7 @@ export const updateUser = async (axiosJWT, user, accessToken, dispatch, id) => {
 export const changePassword = async (axiosJWT, data, accessToken, id) => {
     try {
         const res = await axiosJWT.put(
-            `/auth/changePassword/${id}`,
+            `user/auth/changePassword/${id}`,
             { ...data },
             {
                 headers: { token: `Bearer ${accessToken}` },
@@ -78,7 +78,7 @@ export const changePassword = async (axiosJWT, data, accessToken, id) => {
 
 export const forgotPassword = async (email) => {
     try {
-        const res = await userRequest.post('/auth/forgot-password', { email });
+        const res = await httpRequest.post('user/auth/forgot-password', { email });
         return res;
     } catch (error) {
         console.log(error);
@@ -87,7 +87,7 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (newPassword, token) => {
     try {
-        const res = await userRequest.patch('/auth/reset-password', { newPassword, token });
+        const res = await httpRequest.patch('user/auth/reset-password', { newPassword, token });
         return res;
     } catch (error) {
         console.log(error);

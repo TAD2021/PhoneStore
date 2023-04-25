@@ -1,7 +1,7 @@
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import AddressModal from '~/components/AddressModal';
@@ -37,7 +37,7 @@ function Checkout() {
     });
 
     const hanleOrder = async () => {
-        const userId = user._id;
+        const userId = user?._id;
         const productItem = cart.map((product) => ({ id: product._id, quantity: product.quantity }));
         const newAddress = location.concat(', ', specificAddress);
         const data = {
@@ -48,8 +48,22 @@ function Checkout() {
             address: newAddress,
         };
 
-        await orderService.createOrder(data, navigate, dispatch);
+        await orderService.createOrder(data, dispatch);
     };
+
+    useEffect(() => {
+        cart.length === 0 && navigate('/');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cart]);
+
+    useEffect(() => {
+        if (user) {
+            setUsername(user.name);
+            setPhone(user?.phone);
+            setLocation(user?.address);
+            setSpecificAddress(user?.specificAddress);
+        }
+    }, [user]);
 
     return (
         <Fragment>

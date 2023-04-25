@@ -46,6 +46,9 @@ function Profile() {
         const value = window.confirm('Xác nhận cập nhật thông tin');
         value && (await authService.updateUser(axiosJWT, userData, accessToken, dispatch, user._id));
     };
+
+    console.log(avatar);
+
     return (
         <Fragment>
             <div className={cx('header')}>

@@ -25,9 +25,9 @@ function Orders() {
 
         fetchData();
     }, []);
-    const handleConfirmOrder = (e) => {
+    const handleConfirmOrder = (e, products) => {
         const cofirmOrder = async () => {
-            await orderService.updateOrder(e.target.value, 'Đã xác nhận');
+            await orderService.updateOrder(e.target.value, products, 'ĐÃ XÁC NHẬN');
             const result = await orderService.getAllOrder();
             setOrders(result);
         };
@@ -71,7 +71,7 @@ function Orders() {
                             {orders &&
                                 orders.map(
                                     (order, index) =>
-                                        order.status === 'Chờ xác nhận' && (
+                                        order.status === 'CHỜ XÁC NHẬN' && (
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
                                                 <td>{order.name}</td>
@@ -98,7 +98,7 @@ function Orders() {
                                                     <button
                                                         className={cx('update_icon')}
                                                         value={order._id}
-                                                        onClick={handleConfirmOrder}
+                                                        onClick={(e) => handleConfirmOrder(e, order.products)}
                                                     >
                                                         Xác nhận
                                                     </button>
@@ -136,7 +136,7 @@ function Orders() {
                             {orders &&
                                 orders.map(
                                     (order, index) =>
-                                        order.status !== 'Chờ xác nhận' && (
+                                        order.status !== 'CHỜ XÁC NHẬN' && (
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
                                                 <td>{order.name}</td>

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import userRequest from '~/utils/userRequest';
+import httpRequest from '~/utils/httpRequest';
 
 const refreshToken = async () => {
     try {
-        const res = await userRequest.post('/auth/refresh', {
+        const res = await httpRequest.post('/user/auth/refresh', {
             withCredentials: true,
         });
         return res.data;
@@ -14,7 +14,7 @@ const refreshToken = async () => {
 };
 
 export const createAxios = (user, dispatch, stateSuccess) => {
-    const newInstance = axios.create({ baseURL: process.env.REACT_APP_USER_URL });
+    const newInstance = axios.create({ baseURL: process.env.REACT_APP_URL });
     newInstance.interceptors.request.use(
         async (config) => {
             let date = new Date();

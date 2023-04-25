@@ -1,8 +1,8 @@
-import * as ratingRequest from '~/utils/ratingRequest';
+import * as httpRequest from '~/utils/httpRequest';
 
 export const getRatingByProduct = async (id) => {
     try {
-        const res = await ratingRequest.get(`/rating/${id}`);
+        const res = await httpRequest.get(`/rating/${id}`);
         return res?.rating;
     } catch (error) {
         console.log(error);
@@ -11,7 +11,7 @@ export const getRatingByProduct = async (id) => {
 
 export const getAllRating = async () => {
     try {
-        const res = await ratingRequest.get(`/rating`);
+        const res = await httpRequest.get(`/rating`);
         return res?.rating;
     } catch (error) {
         console.log(error);
@@ -20,7 +20,7 @@ export const getAllRating = async () => {
 
 export const createRating = async (data) => {
     try {
-        const res = await ratingRequest.post(`/rating`, { ...data });
+        const res = await httpRequest.post(`/rating`, { ...data });
         alert('Đánh giá sản phẩm thành công');
         return res?.rating;
     } catch (error) {

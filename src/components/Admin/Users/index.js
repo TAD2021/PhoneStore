@@ -37,7 +37,6 @@ function Users() {
                         <tbody>
                             <tr>
                                 <th>STT</th>
-                                <th>Username</th>
                                 <th>Email</th>
                                 <th>Họ tên</th>
                                 <th>Địa chỉ</th>

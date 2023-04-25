@@ -8,19 +8,19 @@ import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function AdminLogin() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleOnChangeUserName = (e) => setUsername(e.target.value);
+    const handleOnChangeEmail = (e) => setEmail(e.target.value);
     const handleOnChangePassword = (e) => setPassword(e.target.value);
 
     const user = useSelector((state) => state.auth.login.currentUser);
 
     const handleLogin = async () => {
-        await authService.login(username, password, dispatch);
+        await authService.login(email, password, dispatch);
         navigate('/admin/dashboard');
     };
 
@@ -45,9 +45,9 @@ function AdminLogin() {
                                         <input
                                             type="text"
                                             className={cx('auth-form__input')}
-                                            placeholder="Username của bạn"
-                                            value={username}
-                                            onChange={handleOnChangeUserName}
+                                            placeholder="Email của bạn"
+                                            value={email}
+                                            onChange={handleOnChangeEmail}
                                         />
                                     </div>
 
