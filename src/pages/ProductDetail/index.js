@@ -32,8 +32,6 @@ function ProductDetail() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    console.log(star);
-
     useEffect(() => window.scrollTo(0, 0), []);
 
     useEffect(() => {
@@ -69,7 +67,7 @@ function ProductDetail() {
     };
 
     const handleAddToCart = () => {
-        dispatch(addToCart({ ...detail, quantity }));
+        detail.quantity > 0 && dispatch(addToCart({ ...detail, quantity }));
     };
 
     const callbackRatingModal = (childrenData) => {
@@ -103,13 +101,24 @@ function ProductDetail() {
                             <div className={'box-shadow ' + cx('information')}>
                                 <div className={cx('information_header')}>
                                     <h1>{detail.nameProduct}</h1>
+                                    {detail.quantity <= 0 && (
+                                        <div>
+                                            <span>Hết hàng</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className={cx('information_body')}>
                                     <div className={cx('version')}>
                                         <div>
                                             <div>Bộ nhớ</div>
                                             <div className={cx('version_list')}>
-                                                <div className={cx('version_item', 'active')}>
+                                                <div
+                                                    className={
+                                                        detail.quantity <= 0
+                                                            ? cx('version_item', 'outofstock')
+                                                            : cx('version_item', 'active')
+                                                    }
+                                                >
                                                     <span>{detail.memory}</span>
                                                 </div>
                                             </div>
@@ -118,7 +127,13 @@ function ProductDetail() {
                                         <div>
                                             <div>Màu</div>
                                             <div className={cx('version_list')}>
-                                                <div className={cx('version_item', 'active')}>
+                                                <div
+                                                    className={
+                                                        detail.quantity <= 0
+                                                            ? cx('version_item', 'outofstock')
+                                                            : cx('version_item', 'active')
+                                                    }
+                                                >
                                                     <span>{detail.color}</span>
                                                 </div>
                                             </div>
@@ -167,14 +182,20 @@ function ProductDetail() {
                                     </div>
                                     <div className={cx('buy')}>
                                         <div
-                                            className={`text-white button-primary ${cx('buy_now')}`}
-                                            onClick={() => handleAddToCart()}
+                                            className={`text-white button-primary ${
+                                                detail.quantity <= 0 ? cx('buy_now', 'not-active') : cx('buy_now')
+                                            }`}
+                                            onClick={handleAddToCart}
                                         >
                                             <span>Mua ngay</span>
                                         </div>
                                         <div
-                                            className={`text-white button-primary ${cx('add-to-cart')}`}
-                                            onClick={() => handleAddToCart()}
+                                            className={`text-white button-primary ${
+                                                detail.quantity <= 0
+                                                    ? cx('add-to-cart', 'not-active')
+                                                    : cx('add-to-cart')
+                                            }`}
+                                            onClick={handleAddToCart}
                                         >
                                             <FontAwesomeIcon icon={faCartPlus} className={cx('icon')} />
                                         </div>

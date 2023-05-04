@@ -105,7 +105,7 @@ function OrderDetail(props) {
                                 <tr>
                                     <td></td>
                                     <td>
-                                        {status !== 'Chờ xác nhận' && (
+                                        {status !== 'CHỜ XÁC NHẬN' && (
                                             <button className="button-primary" onClick={handleUpdateOrder}>
                                                 Lưu
                                             </button>

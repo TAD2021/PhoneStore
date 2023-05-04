@@ -54,7 +54,6 @@ export const updateUser = async (axiosJWT, user, accessToken, dispatch, id) => {
                 headers: { token: `Bearer ${accessToken}` },
             },
         );
-        console.log(res.data);
         dispatch(updateSuccess(res.data));
     } catch (error) {
         dispatch(updateFailed());

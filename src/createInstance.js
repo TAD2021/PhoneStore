@@ -4,9 +4,7 @@ import httpRequest from '~/utils/httpRequest';
 
 const refreshToken = async () => {
     try {
-        const res = await httpRequest.post('/user/auth/refresh', {
-            withCredentials: true,
-        });
+        const res = await httpRequest.post('/user/auth/refresh');
         return res.data;
     } catch (err) {
         console.log(err);
@@ -19,7 +17,6 @@ export const createAxios = (user, dispatch, stateSuccess) => {
         async (config) => {
             let date = new Date();
             const decodedToken = jwt_decode(user.accessToken);
-            console.log(user, date.getTime() / 1000);
             if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken();
                 const refreshUser = {

@@ -48,6 +48,15 @@
                                 font-size: 16px;
                                 line-height: 150%;
                             }
+                            > div {
+                                border: 1px solid #dc3545;
+                                border-radius: 4px;
+                                display: inline-block;
+                                span {
+                                    padding: 4px 6px;
+                                    color: #dc3545;
+                                }
+                            }
                         }
 
                         .information_body {
@@ -90,6 +99,11 @@
                                         &.active {
                                             --tw-border-opacity: 1;
                                             border-color: rgb(50 149 251 / var(--tw-border-opacity));
+                                        }
+
+                                        &.outofstock {
+                                            opacity: 0.6;
+                                            cursor: not-allowed;
                                         }
                                     }
                                 }
@@ -200,6 +214,11 @@
                                     align-items: center;
                                     justify-content: center;
                                     cursor: pointer;
+                                }
+
+                                .not-active {
+                                    opacity: 0.6;
+                                    cursor: not-allowed;
                                 }
                             }
                         }

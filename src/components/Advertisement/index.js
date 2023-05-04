@@ -6,7 +6,7 @@ const cx = classNames.bind(styles);
 const images = [
     'https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/oppo-sliding-new-moban.png',
     'https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/hotsale-s22-uktrrcuoituan.png',
-    'https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/690x300-sli-14-23890.jpg',
+    'https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/Screenshot_14.png',
 ];
 
 function Advertisement() {

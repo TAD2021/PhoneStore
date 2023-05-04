@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 function Dashboard() {
-    return <div className={cx('wrapper')}>Welcome to the siteo3 for admin</div>;
+    return <div className={cx('wrapper')}>Welcome to the site for admin</div>;
 }
 
 export default Dashboard;
